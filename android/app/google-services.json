@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "223702823231",
+    "firebase_url": "https://the-cleaning-ladies.firebaseio.com",
+    "project_id": "the-cleaning-ladies",
+    "storage_bucket": "the-cleaning-ladies.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223702823231:android:9509d1c3db8c53658aa38a",
+        "android_client_info": {
+          "package_name": "com.jtech.thecleaningladies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "223702823231-420rliri9jcsd0tmcj5gngbpi0edtr5p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUHBgy7nqHlPpZVia1Q-uIkSNOPrFm7Fc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "223702823231-420rliri9jcsd0tmcj5gngbpi0edtr5p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "223702823231-cpu3dqj93059l00v2duq9u1imgc14i4t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.JTech.theCleaningLadies"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

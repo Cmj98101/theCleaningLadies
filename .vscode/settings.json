@@ -1,0 +1,10 @@
+{
+      "editor.fontFamily": "UbuntuMono-Bold",
+      "terminal.integrated.fontSize": 20,
+      "terminal.integrated.fontFamily": "monospace",
+      "editor.tokenColorCustomizations": {
+            "types": "#05aa9c"
+      },
+      "git.ignoreLimitWarning": true,
+      "editor.fontSize": 22
+}

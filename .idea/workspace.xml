@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0b5e3474-bdc7-453d-9deb-7860270565a4" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1ibVyMxJrbBXfPUVBX0jZndCrIb" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
+    <property name="dart.analysis.tool.window.force.activate" value="false" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/android/app" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0b5e3474-bdc7-453d-9deb-7860270565a4" name="Default Changelist" comment="" />
+      <created>1602176532441</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1602176532441</updated>
+    </task>
+    <task id="LOCAL-00001" summary="first Commit">
+      <created>1604947985358</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1604947985358</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="first Commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="first Commit" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2203" y="424" key="#Plugins" timestamp="1602794747214">
+      <screen x="0" y="23" width="3440" height="1323" />
+    </state>
+    <state x="2203" y="424" key="#Plugins/0.23.3440.1323@0.23.3440.1323" timestamp="1602794747214" />
+    <state x="440" y="190" key="#Updates" timestamp="1602179494200">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="440" y="190" key="#Updates/0.0.1680.1050@0.0.1680.1050" timestamp="1602179494200" />
+    <state x="1408" y="466" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1602176577276">
+      <screen x="0" y="23" width="3440" height="1417" />
+    </state>
+    <state x="1408" y="466" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.3440.1417@0.23.3440.1417" timestamp="1602176577276" />
+    <state x="492" y="220" width="1200" height="800" key="AVDManager" timestamp="1603008032970">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state x="492" y="220" width="1200" height="800" key="AVDManager/0.23.1792.1097@0.23.1792.1097" timestamp="1603008032970" />
+    <state x="520" y="124" key="CommitChangelistDialog2" timestamp="1604947983262">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state x="520" y="124" key="CommitChangelistDialog2/0.23.1792.1097@0.23.1792.1097" timestamp="1604947983262" />
+    <state width="679" height="271" key="GridCell.Tab.0.bottom" timestamp="1604809467253">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state width="679" height="271" key="GridCell.Tab.0.bottom/0.23.1792.1097@0.23.1792.1097" timestamp="1604809467253" />
+    <state width="1358" height="271" key="GridCell.Tab.0.bottom/0.23.3440.1323@0.23.3440.1323" timestamp="1602794411401" />
+    <state width="679" height="271" key="GridCell.Tab.0.center" timestamp="1604809467253">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state width="679" height="271" key="GridCell.Tab.0.center/0.23.1792.1097@0.23.1792.1097" timestamp="1604809467253" />
+    <state width="1358" height="271" key="GridCell.Tab.0.center/0.23.3440.1323@0.23.3440.1323" timestamp="1602794411401" />
+    <state width="679" height="271" key="GridCell.Tab.0.left" timestamp="1604809467253">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state width="679" height="271" key="GridCell.Tab.0.left/0.23.1792.1097@0.23.1792.1097" timestamp="1604809467253" />
+    <state width="1358" height="271" key="GridCell.Tab.0.left/0.23.3440.1323@0.23.3440.1323" timestamp="1602794411401" />
+    <state width="679" height="271" key="GridCell.Tab.0.right" timestamp="1604809467253">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state width="679" height="271" key="GridCell.Tab.0.right/0.23.1792.1097@0.23.1792.1097" timestamp="1604809467253" />
+    <state width="1358" height="271" key="GridCell.Tab.0.right/0.23.3440.1323@0.23.3440.1323" timestamp="1602794411401" />
+    <state width="1358" height="271" key="GridCell.Tab.1.bottom" timestamp="1603008032824">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state width="1358" height="271" key="GridCell.Tab.1.bottom/0.23.1792.1097@0.23.1792.1097" timestamp="1603008032824" />
+    <state width="1358" height="271" key="GridCell.Tab.1.bottom/0.23.3440.1323@0.23.3440.1323" timestamp="1602794411402" />
+    <state width="1358" height="271" key="GridCell.Tab.1.center" timestamp="1603008032823">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state width="1358" height="271" key="GridCell.Tab.1.center/0.23.1792.1097@0.23.1792.1097" timestamp="1603008032823" />
+    <state width="1358" height="271" key="GridCell.Tab.1.center/0.23.3440.1323@0.23.3440.1323" timestamp="1602794411401" />
+    <state width="1358" height="271" key="GridCell.Tab.1.left" timestamp="1603008032823">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state width="1358" height="271" key="GridCell.Tab.1.left/0.23.1792.1097@0.23.1792.1097" timestamp="1603008032823" />
+    <state width="1358" height="271" key="GridCell.Tab.1.left/0.23.3440.1323@0.23.3440.1323" timestamp="1602794411401" />
+    <state width="1358" height="271" key="GridCell.Tab.1.right" timestamp="1603008032823">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state width="1358" height="271" key="GridCell.Tab.1.right/0.23.1792.1097@0.23.1792.1097" timestamp="1603008032823" />
+    <state width="1358" height="271" key="GridCell.Tab.1.right/0.23.3440.1323@0.23.3440.1323" timestamp="1602794411401" />
+    <state x="795" y="398" key="SettingsEditor" timestamp="1602894259254">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state x="795" y="398" key="SettingsEditor/0.23.1792.1097@0.23.1792.1097" timestamp="1602894259254" />
+    <state x="1636" y="511" key="SettingsEditor/0.23.3440.1323@0.23.3440.1323" timestamp="1602795045943" />
+    <state x="562" y="274" key="Vcs.Push.Dialog.v2" timestamp="1604947993678">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state x="562" y="274" key="Vcs.Push.Dialog.v2/0.23.1792.1097@0.23.1792.1097" timestamp="1604947993678" />
+    <state x="1390" y="563" key="com.intellij.ide.util.TipDialog" timestamp="1602176887648">
+      <screen x="0" y="23" width="3440" height="1417" />
+    </state>
+    <state x="1390" y="563" key="com.intellij.ide.util.TipDialog/0.23.3440.1417@0.23.3440.1417" timestamp="1602176887647" />
+    <state x="1503" y="605" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602794143625">
+      <screen x="0" y="23" width="3440" height="1323" />
+    </state>
+    <state x="1503" y="605" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.3440.1323@0.23.3440.1323" timestamp="1602794143625" />
+    <state x="663" y="342" key="git4idea.merge.GitMergeDialog" timestamp="1604947068599">
+      <screen x="0" y="23" width="1792" height="1097" />
+    </state>
+    <state x="663" y="342" key="git4idea.merge.GitMergeDialog/0.23.1792.1097@0.23.1792.1097" timestamp="1604947068599" />
+    <state x="1385" y="322" key="run.anything.popup" timestamp="1602789803418">
+      <screen x="0" y="23" width="3440" height="1323" />
+    </state>
+    <state x="1385" y="322" key="run.anything.popup/0.23.3440.1323@0.23.3440.1323" timestamp="1602789803417" />
+  </component>
+</project>
