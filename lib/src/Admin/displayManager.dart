@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:the_cleaning_ladies/src/Admin/EasyDB/EasyDb.dart';
-import 'package:the_cleaning_ladies/src/Admin/Screens/homeScreen.dart';
-import 'package:the_cleaning_ladies/src/Admin/Screens/myClients.dart';
-import 'package:the_cleaning_ladies/src/Admin/Screens/quickSchedule.dart';
-import 'package:the_cleaning_ladies/src/Admin/Screens/settings.dart';
-import 'package:the_cleaning_ladies/src/Admin/Screens/summary.dart';
-import 'package:the_cleaning_ladies/src/Admin/admin.dart';
-import 'package:the_cleaning_ladies/src/BLoC/Appointments/appointment_bloc.dart';
-import '../Widgets/bottomNavigation/bottomMenu.dart';
+import 'package:the_cleaning_ladies/models/easy_db/EasyDb.dart';
+import 'package:the_cleaning_ladies/src/Admin/views/homeScreen.dart';
+import 'package:the_cleaning_ladies/src/Admin/views/MyClients/myClients.dart';
+import 'package:the_cleaning_ladies/src/Admin/views/quickSchedule.dart';
+import 'package:the_cleaning_ladies/src/Admin/views/settings.dart';
+import 'package:the_cleaning_ladies/src/Admin/views/summary.dart';
+import 'package:the_cleaning_ladies/models/user_models/admin.dart';
+import 'package:the_cleaning_ladies/widgets/bottomNavigation/bottomMenu.dart';
 
 class Screen {
   final String name;
@@ -61,7 +59,6 @@ class _AdminDisplayManagerState extends State<AdminDisplayManager> {
   static List<Screen> screens;
   int active = 2;
   void onTabChange(dynamic index) {
-    // print('$inxdex');
     setState(() {
       active = index;
     });
@@ -99,17 +96,12 @@ class _AdminDisplayManagerState extends State<AdminDisplayManager> {
     ];
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   BlocProvider.of<AppointmentBloc>(context)..close();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNav(
         menuItems,
+        admin: widget.admin,
         onChange: (i) => onTabChange(i),
       ),
       body: screens[active].widget,

@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 
 abstract class Auth {
   Future<dynamic> getCurrentUser(Function(dynamic) onUser);
+
   Future<User> signInWithEmailAndPassword(String email, String password,
+      {@required Function(FirebaseAuthException) onError});
+  Future<User> signUpWithEmailAndPassword(String email, String password,
       {@required Function(FirebaseAuthException) onError});
   Future<User> createUser(String email, String password);
   Future<User> createUserFromAdminAccount(String email, String password);
@@ -27,11 +30,21 @@ class ImpAuth extends Auth {
     return userCredential?.user ?? null;
   }
 
+  Future<User> signUpWithEmailAndPassword(String email, String password,
+      {@required Function(FirebaseAuthException) onError}) async {
+    UserCredential userCredential;
+    userCredential = await _auth
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .catchError((e) => onError(e));
+
+    return userCredential?.user ?? null;
+  }
+
   Future<User> createUser(String email, String password) async {
     UserCredential userCredential;
 
     try {
-      UserCredential userCredential = await _auth
+      userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .catchError((e) => print(e));
     } on FirebaseAuthException catch (e) {

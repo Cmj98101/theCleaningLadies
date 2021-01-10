@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>223702823231-cpu3dqj93059l00v2duq9u1imgc14i4t.apps.googleusercontent.com</string>
+	<string>223702823231-74qes6gno5f3mdlig4o8rb9c0jpvlqsr.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.223702823231-cpu3dqj93059l00v2duq9u1imgc14i4t</string>
+	<string>com.googleusercontent.apps.223702823231-74qes6gno5f3mdlig4o8rb9c0jpvlqsr</string>
 	<key>API_KEY</key>
 	<string>AIzaSyA1yFhkgOADawSe73FOF-DbjdYHGvKUAdI</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.JTech.theCleaningLadies</string>
+	<string>com.JTech.tcl</string>
 	<key>PROJECT_ID</key>
 	<string>the-cleaning-ladies</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:223702823231:ios:b4e5a7ee41adff128aa38a</string>
+	<string>1:223702823231:ios:9ba9ab3c6e36c07f8aa38a</string>
 	<key>DATABASE_URL</key>
 	<string>https://the-cleaning-ladies.firebaseio.com</string>
 </dict>

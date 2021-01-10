@@ -23,16 +23,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^0.5.2
-  firebase_auth: ^0.18.3
-  cloud_firestore: ^0.14.3
-
+  firebase_core: ^0.5.3
+  firebase_auth: ^0.18.4+1
+  cloud_firestore: ^0.14.4
+  firebase_messaging: ^7.0.3
+  font_awesome_flutter: ^8.10.0
   swipedetector: ^1.2.0
+  flutter_app_badger: ^1.1.2
   #firebase_messaging: ^6.0.16
   # flutter_svg: ^0.17.4
-  syncfusion_flutter_core: ^18.3.47
-  syncfusion_flutter_calendar: ^18.3.47
-  syncfusion_flutter_datepicker: ^18.3.47-beta
+  syncfusion_flutter_core: ^18.4.31
+  syncfusion_flutter_calendar: ^18.4.31
+  syncfusion_flutter_datepicker: ^18.4.31-beta
   intl: ^0.16.1
   date_utils: ^0.1.0+3
   flutter_bloc: ^6.1.0

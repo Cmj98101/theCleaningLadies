@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:the_cleaning_ladies/main.dart';
-import 'package:the_cleaning_ladies/src/Client/client.dart';
-import 'package:the_cleaning_ladies/src/Widgets/CalendarWidget/calendar.dart';
+import 'package:the_cleaning_ladies/models/user_models/client.dart';
+import 'package:the_cleaning_ladies/models/appointment_model/appointment.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

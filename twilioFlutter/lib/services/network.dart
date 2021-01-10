@@ -4,42 +4,40 @@ import 'dart:convert';
 class NetworkHelper {
   NetworkHelper();
 
-  Future postAutoReminder(
-      var url, var headers, var body, Function(bool) requestResponse) async {
+  Future postRequest(
+    var url,
+    var headers,
+    var body,
+    Function(bool, int, dynamic) requestResponse,
+  ) async {
     http.Response response = await http.post(url, headers: headers, body: body);
-    if (response.statusCode == 200) {
-      print('Auto Message was sent');
-      requestResponse(true);
-    } else {
-      print('Sending Failed');
-      requestResponse(false);
+    var data = jsonDecode(response.body);
 
-      var data = jsonDecode(response.body);
-      print('Error Code : ' + data['code'].toString());
-      print('Error Message : ' + data['message']);
-      print("More info : " + data['more_info']);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print('Request Successful statusCode: ${response.statusCode}');
+      requestResponse(true, response.statusCode, data);
+    } else {
+      print('Request Failed statusCode: ${response.statusCode}');
+      requestResponse(false, data['code'], data);
+
+      // print('Error Code : ' + data['code'].toString());
+      // print('Error Message : ' + data['message']);
+      // print("More info : " + data['more_info']);
     }
   }
 
-  Future postMessageRequest(var url, var headers, var body) async {
-    http.Response response = await http.post(url, headers: headers, body: body);
-    if (response.statusCode == 201) {
-      print('Sms sent');
-    } else {
-      print('Sending Failed');
-      var data = jsonDecode(response.body);
-      print('Error Code : ' + data['code'].toString());
-      print('Error Message : ' + data['message']);
-      print("More info : " + data['more_info']);
-    }
-  }
+  Future getRequest(String url, Function(bool, int, dynamic) requestResponse,
+      {var headers}) async {
+    http.Response response = await http.get(url, headers: headers);
+    var data = response.body;
 
-  Future getRequest(String url) async {
-    http.Response response = await http.get(url);
     if (response.statusCode == 200) {
-      var data = response.body;
+      // print('get request Data $data');
+      requestResponse(true, response.statusCode, jsonDecode(data));
       return jsonDecode(data);
     } else {
+      requestResponse(false, response.statusCode, jsonDecode(data));
+
       print(response.statusCode);
     }
   }

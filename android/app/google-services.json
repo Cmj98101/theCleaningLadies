@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:223702823231:android:9509d1c3db8c53658aa38a",
+        "mobilesdk_app_id": "1:223702823231:android:2fda72010ed8abaa8aa38a",
         "android_client_info": {
-          "package_name": "com.jtech.thecleaningladies"
+          "package_name": "com.JTech.tcl"
         }
       },
       "oauth_client": [
@@ -32,10 +32,10 @@
               "client_type": 3
             },
             {
-              "client_id": "223702823231-cpu3dqj93059l00v2duq9u1imgc14i4t.apps.googleusercontent.com",
+              "client_id": "223702823231-74qes6gno5f3mdlig4o8rb9c0jpvlqsr.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.JTech.theCleaningLadies"
+                "bundle_id": "com.JTech.tcl"
               }
             }
           ]

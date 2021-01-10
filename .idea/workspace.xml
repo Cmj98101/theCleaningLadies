@@ -18,7 +18,167 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b5e3474-bdc7-453d-9deb-7860270565a4" name="Default Changelist" comment="" />
+    <list default="true" id="0b5e3474-bdc7-453d-9deb-7860270565a4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/ios/Runner/Runner.entitlements" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/google-services.json" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/google-services.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/debug/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/kotlin/com/example/the_cleaning_ladies/MainActivity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/profile/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/functions/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/AppDelegate.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/AppDelegate.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/GoogleService-Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/GoogleService-Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/EasyDB/EasyDb.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/Settings/quickScheduleSettings.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/Settings/reminderSettings.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/addAppointment.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/addClient.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/appointmentOnTapDetails.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/appointmentsScheduled.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/clientReminderMsgEditor.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/homeScreen.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/messageInbox.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/moreClientInfo.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/myClients.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/quickSchedule.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/scheduleSummary.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/selectClientForAppointment.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/settings.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/Screens/summary.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/admin.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/clients.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/displayManager.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/Admin/displayManager.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Admin/workers.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Auth/auth.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/Auth/auth.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Auth/authHandler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/Auth/authHandler.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/BLoC/Appointments/AppointmentRepo/appointmentRepo.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/BLoC/Appointments/appointment_bloc.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/BLoC/Appointments/appointment_event.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/BLoC/Appointments/appointment_state.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/BLoC/Clients/ClientRepo/clientRepo.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/BLoC/Clients/client.state.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/BLoC/Clients/client_bloc.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/BLoC/Clients/client_event.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Client/Screens/homeScreen.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Client/client.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Client/displayManager.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/Client/displayManager.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/ErrorHandlers/errorHandlers.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Models/SMS/message.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Models/User/user.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Models/historyEvent.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/ScreenManager/screenManager.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Widgets/AddClientForm/addClientForm.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Widgets/CalendarWidget/calendar.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Widgets/PresetWidget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/Widgets/bottomNavigation/bottomMenu.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/login.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/signup.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/signup.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/sizeConfig.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/widget_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/widget_test.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutter/lib/models/sms.dart" beforeDir="false" afterPath="$PROJECT_DIR$/twilioFlutter/lib/models/sms.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutter/lib/services/network.dart" beforeDir="false" afterPath="$PROJECT_DIR$/twilioFlutter/lib/services/network.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutter/lib/twilioFlutter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/twilioFlutter/lib/twilioFlutter.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/.idea/libraries/Dart_SDK.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/.idea/libraries/Flutter_for_Android.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/.idea/runConfigurations/example_lib_main_dart.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/.metadata" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/CHANGELOG.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/android/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/android/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/android/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/android/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/android/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/android/src/main/kotlin/com/Jtech/twilioFlutterSDK/TwilioFlutterSDKPlugin.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/.metadata" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/app/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/app/src/debug/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/app/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/app/src/main/kotlin/com/Jtech/twilioFlutterSDK_example/MainActivity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/app/src/main/res/drawable/launch_background.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/app/src/main/res/values/styles.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/app/src/profile/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/android/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Flutter/AppFrameworkInfo.plist" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Flutter/Debug.xcconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Flutter/Release.xcconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Podfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner.xcworkspace/contents.xcworkspacedata" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/AppDelegate.swift" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Base.lproj/LaunchScreen.storyboard" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Base.lproj/Main.storyboard" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Info.plist" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/ios/Runner/Runner-Bridging-Header.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/lib/main.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/pubspec.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/example/test/widget_test.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/ios/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/ios/Assets/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/ios/Classes/SwiftTwilioFlutterSDKPlugin.swift" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/ios/Classes/TwilioFlutterSDKPlugin.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/ios/Classes/TwilioFlutterSDKPlugin.m" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/ios/twilioFlutterSDK.podspec" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/lib/twilioFlutterSDK.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/pubspec.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/test/twilioFlutterSDK_test.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twilioFlutterSDK/twilioFlutterSDK.iml" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -105,34 +265,49 @@
       <screen x="0" y="23" width="3440" height="1417" />
     </state>
     <state x="1408" y="466" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.3440.1417@0.23.3440.1417" timestamp="1602176577276" />
-    <state x="492" y="220" width="1200" height="800" key="AVDManager" timestamp="1603008032970">
-      <screen x="0" y="23" width="1792" height="1097" />
+    <state x="0" y="25" width="1792" height="1051" key="AVDManager" timestamp="1609101287394">
+      <screen x="0" y="0" width="1792" height="1120" />
     </state>
+    <state x="0" y="25" width="1792" height="1051" key="AVDManager/0.0.1792.1120@0.0.1792.1120" timestamp="1609101287394" />
     <state x="492" y="220" width="1200" height="800" key="AVDManager/0.23.1792.1097@0.23.1792.1097" timestamp="1603008032970" />
+    <state x="492" y="222" width="1200" height="799" key="AVDManager/0.25.1792.1095@0.25.1792.1095" timestamp="1606502124281" />
+    <state x="2736" y="259" width="2304" height="1051" key="AVDManager/1792.0.3440.1440/0.0.1792.1120@1792.0.3440.1440" timestamp="1609038216783" />
     <state x="520" y="124" key="CommitChangelistDialog2" timestamp="1604947983262">
       <screen x="0" y="23" width="1792" height="1097" />
     </state>
     <state x="520" y="124" key="CommitChangelistDialog2/0.23.1792.1097@0.23.1792.1097" timestamp="1604947983262" />
-    <state width="679" height="271" key="GridCell.Tab.0.bottom" timestamp="1604809467253">
-      <screen x="0" y="23" width="1792" height="1097" />
+    <state width="875" height="423" key="GridCell.Tab.0.bottom" timestamp="1609101287327">
+      <screen x="0" y="0" width="1792" height="1120" />
     </state>
+    <state width="875" height="423" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1609101287327" />
     <state width="679" height="271" key="GridCell.Tab.0.bottom/0.23.1792.1097@0.23.1792.1097" timestamp="1604809467253" />
     <state width="1358" height="271" key="GridCell.Tab.0.bottom/0.23.3440.1323@0.23.3440.1323" timestamp="1602794411401" />
-    <state width="679" height="271" key="GridCell.Tab.0.center" timestamp="1604809467253">
-      <screen x="0" y="23" width="1792" height="1097" />
+    <state width="679" height="269" key="GridCell.Tab.0.bottom/0.25.1792.1095@0.25.1792.1095" timestamp="1606502124102" />
+    <state width="1699" height="269" key="GridCell.Tab.0.bottom/1792.0.3440.1440/0.0.1792.1120@1792.0.3440.1440" timestamp="1609037788485" />
+    <state width="875" height="423" key="GridCell.Tab.0.center" timestamp="1609101287327">
+      <screen x="0" y="0" width="1792" height="1120" />
     </state>
+    <state width="875" height="423" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1609101287327" />
     <state width="679" height="271" key="GridCell.Tab.0.center/0.23.1792.1097@0.23.1792.1097" timestamp="1604809467253" />
     <state width="1358" height="271" key="GridCell.Tab.0.center/0.23.3440.1323@0.23.3440.1323" timestamp="1602794411401" />
-    <state width="679" height="271" key="GridCell.Tab.0.left" timestamp="1604809467253">
-      <screen x="0" y="23" width="1792" height="1097" />
+    <state width="679" height="269" key="GridCell.Tab.0.center/0.25.1792.1095@0.25.1792.1095" timestamp="1606502124101" />
+    <state width="1699" height="269" key="GridCell.Tab.0.center/1792.0.3440.1440/0.0.1792.1120@1792.0.3440.1440" timestamp="1609037788483" />
+    <state width="875" height="423" key="GridCell.Tab.0.left" timestamp="1609101287326">
+      <screen x="0" y="0" width="1792" height="1120" />
     </state>
+    <state width="875" height="423" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1609101287326" />
     <state width="679" height="271" key="GridCell.Tab.0.left/0.23.1792.1097@0.23.1792.1097" timestamp="1604809467253" />
     <state width="1358" height="271" key="GridCell.Tab.0.left/0.23.3440.1323@0.23.3440.1323" timestamp="1602794411401" />
-    <state width="679" height="271" key="GridCell.Tab.0.right" timestamp="1604809467253">
-      <screen x="0" y="23" width="1792" height="1097" />
+    <state width="679" height="269" key="GridCell.Tab.0.left/0.25.1792.1095@0.25.1792.1095" timestamp="1606502124101" />
+    <state width="1699" height="269" key="GridCell.Tab.0.left/1792.0.3440.1440/0.0.1792.1120@1792.0.3440.1440" timestamp="1609037788482" />
+    <state width="875" height="423" key="GridCell.Tab.0.right" timestamp="1609101287327">
+      <screen x="0" y="0" width="1792" height="1120" />
     </state>
+    <state width="875" height="423" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1609101287327" />
     <state width="679" height="271" key="GridCell.Tab.0.right/0.23.1792.1097@0.23.1792.1097" timestamp="1604809467253" />
     <state width="1358" height="271" key="GridCell.Tab.0.right/0.23.3440.1323@0.23.3440.1323" timestamp="1602794411401" />
+    <state width="679" height="269" key="GridCell.Tab.0.right/0.25.1792.1095@0.25.1792.1095" timestamp="1606502124101" />
+    <state width="1699" height="269" key="GridCell.Tab.0.right/1792.0.3440.1440/0.0.1792.1120@1792.0.3440.1440" timestamp="1609037788484" />
     <state width="1358" height="271" key="GridCell.Tab.1.bottom" timestamp="1603008032824">
       <screen x="0" y="23" width="1792" height="1097" />
     </state>

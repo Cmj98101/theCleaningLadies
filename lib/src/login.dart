@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:the_cleaning_ladies/src/Auth/auth.dart';
+import 'package:the_cleaning_ladies/models/user_models/admin.dart';
+import 'package:the_cleaning_ladies/models/user_models/client.dart';
 import 'package:the_cleaning_ladies/src/Auth/authHandler.dart';
-import 'package:the_cleaning_ladies/src/ErrorHandlers/errorHandlers.dart';
-import 'package:the_cleaning_ladies/src/sizeConfig.dart';
+import 'package:the_cleaning_ladies/models/error_handlers/errorHandlers.dart';
+import 'package:the_cleaning_ladies/models/size_config.dart';
 
 class Login extends StatefulWidget {
-  final VoidCallback onSignInAdmin;
-  final VoidCallback onSignInClient;
+  final Function(Admin) onSignInAdmin;
+  final Function(Client) onSignInClient;
   final VoidCallback onSignUpTap;
   Login(
       {@required this.onSignInAdmin,
@@ -49,8 +50,8 @@ class _LoginState extends State<Login> {
         },
         email: _email,
         password: _password,
-        logInAdmin: (admin) => widget.onSignInAdmin(),
-        logInClient: (client) => widget.onSignInClient(),
+        logInAdmin: (admin) => widget.onSignInAdmin(admin),
+        logInClient: (client) => widget.onSignInClient(client),
         formKey: formKey);
   }
 
@@ -129,9 +130,7 @@ class _LoginState extends State<Login> {
                       Container(
                         margin: EdgeInsets.only(top: 30),
                         child: RaisedButton(
-                          onPressed: () {
-                            onLogInTapped();
-                          },
+                          onPressed: () => onLogInTapped(),
                           child: Text('Login'),
                         ),
                       ),

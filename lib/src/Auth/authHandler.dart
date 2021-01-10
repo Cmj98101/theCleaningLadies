@@ -1,16 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:the_cleaning_ladies/src/Admin/admin.dart';
-import 'package:the_cleaning_ladies/src/Auth/auth.dart';
-import 'package:the_cleaning_ladies/src/Client/client.dart';
-import 'package:the_cleaning_ladies/src/ErrorHandlers/errorHandlers.dart';
-import 'package:the_cleaning_ladies/src/Models/User/user.dart' as modelUser;
+import 'package:the_cleaning_ladies/models/easy_db/EasyDb.dart';
+import 'package:the_cleaning_ladies/models/user_models/client.dart';
+import 'package:the_cleaning_ladies/models/user_models/admin.dart';
+import 'package:the_cleaning_ladies/models/error_handlers/errorHandlers.dart';
+import 'package:the_cleaning_ladies/models/user_models/user.dart' as modelUser;
+import 'package:the_cleaning_ladies/src/auth/auth.dart';
 
 class HandleAuth {
   FirebaseFirestore _db = FirebaseFirestore.instance;
   GlobalKey<FormState> formKey;
   Auth auth = ImpAuth();
+  EasyDB _easyDb = DataBaseRepo();
+  modelUser.User user;
   String email;
   String password;
 
@@ -25,6 +28,14 @@ class HandleAuth {
     auth.signOutUser();
     onLoggedOff();
     isLoading(false);
+  }
+  HandleAuth.signUp(BuildContext context,
+      {@required this.user,
+      @required this.isLoading,
+      @required this.logInAdmin,
+      @required this.formKey,
+      @required this.onErrorMsg}) {
+    processSignUp(context, isLoading);
   }
   HandleAuth.login(BuildContext context,
       {@required this.email,
@@ -53,8 +64,8 @@ class HandleAuth {
         Map<String, dynamic> data = snap.data();
         userType = userTypes['${data['userType']}'];
         userType == modelUser.UserType.admin
-            ? logInAdmin(Admin.fromDocument(snap))
-            : logInClient(Client.fromDocSnapDocument(snap));
+            ? logInAdmin(Admin.fromDocumentSnap(snap))
+            : logInClient(Client.fromDocumentSnap(snap));
       }
     });
   }
@@ -73,10 +84,38 @@ class HandleAuth {
       Map<String, dynamic> data = snap.data();
       userType = userTypes['${data['userType']}'];
       userType == modelUser.UserType.admin
-          ? logInAdmin(Admin.fromDocument(snap))
-          : logInClient(Client.fromDocSnapDocument(snap));
+          ? logInAdmin(Admin.fromDocumentSnap(snap))
+          : logInClient(Client.fromDocumentSnap(snap));
     } else {
       throw DocumentDoesNotExist(message: 'User does Not Exist In DB');
+    }
+  }
+
+  void processSignUp(BuildContext context, Function(bool) isLoading) async {
+    if (validateAndSave()) {
+      isLoading(true);
+      User fireBaseUser = await auth
+          .signUpWithEmailAndPassword(user.email, user.password, onError: (e) {
+        print(e.code);
+        return onErrorMsg(LoginErrorHandler(e.code).friendlyErrorMessage);
+      });
+      if (fireBaseUser != null) {
+        Admin admin = Admin(
+            businessName: user.businessName,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            state: user.state,
+            city: user.city,
+            zipCode: user.zipCode,
+            contactNumber: user.contactNumber,
+            businessCode: '${user.businessName}-${fireBaseUser.uid}');
+        await _easyDb.createUserData(
+            'Users/${fireBaseUser.uid}', admin.toDocument(),
+            createAutoId: false, addAutoIDToDoc: false);
+        await signInUser(fireBaseUser);
+      }
+      isLoading(false);
     }
   }
 

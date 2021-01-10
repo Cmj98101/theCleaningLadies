@@ -5,24 +5,52 @@
       "version": "0.2.0",
       "configurations": [
 
+            
           {
-            "name": "Android",
+            "name": "Android -Debug",
             "type": "dart",
             "request": "launch",
-            "program": "lib/main.dart"
+            "program": "lib/main.dart",
+            "flutterMode": "debug"
+
+      },  
+      {
+            "name": "Android -Release",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "release"
       },  
       {
             "name": "Iphone 12 Pro Max",
             "type": "dart",
             "request": "launch",
-            "program": "lib/main.dart"
+            "program": "lib/main.dart",
+            "flutterMode": "debug"
+
       },
+      {
+            "name": "Iphone 8",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "debug"
+
+      },{
+            "name": "Iphone Mini",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "debug"
+
+      },  
       {
             "name": "Ipad",
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart"
       },
+      
 
       {
             "name": "Flutter",
@@ -31,10 +59,18 @@
             "program": "lib/main.dart"
       },
       {
-            "name": "Live IPHONE",
+            "name": "Live IPHONE -release",
             "type": "dart",
             "request": "launch",
-            "program": "lib/main.dart"
+            "program": "lib/main.dart",
+            "flutterMode": "release"
+      },
+      {
+            "name": "Live IPHONE -debug",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "debug"
       }
       ]
 }

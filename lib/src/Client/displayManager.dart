@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:the_cleaning_ladies/src/Admin/EasyDB/EasyDb.dart';
-import 'package:the_cleaning_ladies/src/Admin/admin.dart';
-import 'package:the_cleaning_ladies/src/Client/Screens/homeScreen.dart';
-import 'package:the_cleaning_ladies/src/Client/client.dart';
-import '../Widgets/bottomNavigation/bottomMenu.dart';
+import 'package:the_cleaning_ladies/models/user_models/client.dart';
+import 'package:the_cleaning_ladies/models/easy_db/EasyDb.dart';
+import 'package:the_cleaning_ladies/models/user_models/admin.dart';
+import 'package:the_cleaning_ladies/src/client/views/homeScreen.dart';
+import 'package:the_cleaning_ladies/widgets/bottomNavigation/bottomMenu.dart';
 
 class Screen {
   final String name;
@@ -56,7 +56,7 @@ class _ClientDisplayManagerState extends State<ClientDisplayManager> {
   static List<Screen> screens;
   int active = 2;
   void onTabChange(dynamic index) {
-    // print('$inxdex');
+    // print('12123$index');
     setState(() {
       active = index;
     });

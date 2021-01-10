@@ -16,7 +16,7 @@ class SMS {
 
   Future getSMSList(String url) async {
     NetworkHelper networkHelper = NetworkHelper();
-    var data = await networkHelper.getRequest(url);
+    var data = await networkHelper.getRequest(url, (res, statusCode, data) {});
     List<SMS> smsList = [];
     var messages = data['messages'];
     for (var message in messages) {
