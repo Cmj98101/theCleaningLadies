@@ -275,7 +275,7 @@ class Client extends User {
     Map<String, dynamic> doc = document.data();
     return ServiceFrequency.values.firstWhere(
         (freq) => freq.toString() == doc['serviceFrequency'], orElse: () {
-      print(doc['serviceFrequency']);
+      print('Service Frequency 278 CLient ${doc['serviceFrequency']}');
       return ServiceFrequency.weekly;
     });
   }
@@ -432,20 +432,20 @@ class Client extends User {
         (freq) =>
             (freq.toString() == doc['serviceFrequency']) ??
             ServiceFrequency.weekly, orElse: () {
-      print(doc['serviceFrequency']);
+      print('Service Frequency: ${doc['serviceFrequency']}');
       return ServiceFrequency.weekly;
     });
     ServiceTimePreference serviceTimePreference = ServiceTimePreference.values
         .firstWhere((pref) => pref.toString() == doc['serviceTimePreference'],
             orElse: () {
-      print(doc['serviceTimePreference']);
+      print('ServiceTimePreference: ${doc['serviceTimePreference']}');
       return ServiceTimePreference.earlyMornings;
     });
     PaymentType paymentType = PaymentType.values.firstWhere(
         (paymentType) =>
             paymentType.toString() == (doc['paymentType']) ??
             PaymentType.unknown, orElse: () {
-      print(doc['paymentType']);
+      print('Payment Type: ${doc['paymentType']}');
       return PaymentType.unknown;
     });
     Client client = Client(

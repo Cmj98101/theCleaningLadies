@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/models/user_models/user.dart';
 
@@ -9,8 +10,9 @@ abstract class EasyDB {
       {bool createAutoId = true,
       bool addAutoIDToDoc = true,
       bool duplicateDoc = false,
-      String duplicatedCollectionPath,
-      Map<String, dynamic> duplicatedData});
+      List<String> duplicatedCollectionPath,
+      List<Map<String, Object>> duplicatedData,
+      @required Function(String) onCreation});
   Future<DocumentSnapshot> getUserData(String documentPath);
   Future<void> editDocumentData(String pathTo, Map<String, dynamic> data);
   void deleteAppointmentDemos(Admin admin);
@@ -28,19 +30,23 @@ class DataBaseRepo implements EasyDB {
       {bool createAutoId = true,
       bool addAutoIDToDoc = true,
       bool duplicateDoc = false,
-      String duplicatedCollectionPath,
-      Map<String, dynamic> duplicatedData}) async {
+      List<String> duplicatedCollectionPath,
+      List<Map<String, Object>> duplicatedData,
+      @required Function(String) onCreation}) async {
     try {
       if (createAutoId) {
         return _db.collection(path).add(data).then((ref) async {
           if (duplicateDoc) {
-            await _db
-                .doc('$duplicatedCollectionPath/${ref.id}')
-                .set(duplicatedData.isEmpty ? data : duplicatedData);
+            for (var i = 0; i < duplicatedCollectionPath.length; i++) {
+              await _db
+                  .doc('${duplicatedCollectionPath[i]}/${ref.id}')
+                  .set(duplicatedData[i].isEmpty ? {} : duplicatedData[i]);
+            }
           }
           if (addAutoIDToDoc) {
             return await ref.update({'id': ref.id});
           }
+          onCreation(ref.id);
         });
       } else {
         return await _db.doc(path).set(data);

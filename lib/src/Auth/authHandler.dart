@@ -112,7 +112,7 @@ class HandleAuth {
             businessCode: '${user.businessName}-${fireBaseUser.uid}');
         await _easyDb.createUserData(
             'Users/${fireBaseUser.uid}', admin.toDocument(),
-            createAutoId: false, addAutoIDToDoc: false);
+            createAutoId: false, addAutoIDToDoc: false, onCreation: (docId) {});
         await signInUser(fireBaseUser);
       }
       isLoading(false);

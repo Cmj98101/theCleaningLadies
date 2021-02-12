@@ -9,6 +9,7 @@ class Appointment {
   Appointment.creationFailure() {
     print('No Appointment Created');
   }
+
   Appointment(this.eventName, this.from, this.to, this.background,
       this.isAllDay, this.client,
       {this.appointmentId,
@@ -26,7 +27,8 @@ class Appointment {
       this.flowSID,
       this.executionSID,
       this.admin,
-      this.services}) {
+      this.services,
+      this.ref}) {
     assert(admin != null);
     if (admin != null) {
       services = <Service>[];
@@ -52,7 +54,8 @@ class Appointment {
       this.flowSID,
       this.executionSID,
       this.admin,
-      this.services});
+      this.services,
+      this.ref});
 
   Appointment.newAppointment(
       {this.eventName,
@@ -68,7 +71,8 @@ class Appointment {
       this.contactNumber,
       this.note,
       this.flowSID,
-      this.executionSID});
+      this.executionSID,
+      this.ref});
   Client client;
   String eventName;
   DateTime from;
@@ -90,6 +94,8 @@ class Appointment {
   Admin admin;
   String flowSID;
   String executionSID;
+  DocumentReference ref;
+
   // ignore: slash_for_doc_comments
   /**  
    *If true then send a reminder text
@@ -164,6 +170,23 @@ class Appointment {
     isReminderSent = data['isReminderSent'];
   }
 
+  factory Appointment.clone(Appointment appointment,
+      {DateTime from, DateTime to}) {
+    return Appointment(
+        appointment.eventName ?? '',
+        from ?? appointment.from,
+        to ?? appointment.to,
+        appointment.background,
+        appointment.isAllDay,
+        appointment.client,
+        isConfirmed: appointment.isConfirmed,
+        isRescheduling: appointment.isRescheduling,
+        noReply: appointment.noReply,
+        serviceCost: appointment.client.costPerCleaning,
+        keyRequired: appointment.client.keyRequired,
+        note: appointment.client.note,
+        admin: appointment.admin);
+  }
   factory Appointment.fromDocument(DocumentSnapshot document,
       {@required Admin admin}) {
     Map<String, dynamic> doc = document.data();
@@ -204,7 +227,8 @@ class Appointment {
             ? (doc['services'] as List<dynamic>)
                 .map((map) => Service.fromMap(map))
                 .toList()
-            : <Service>[]);
+            : <Service>[],
+        ref: document.reference);
   }
   Map<String, Object> toDocument() {
     List<Map<String, Object>> servicesSelected = [];
@@ -220,7 +244,7 @@ class Appointment {
       'isAllDay': false,
       'clientId': "${client.id}",
       'clientReference': 'Users/${client.id}',
-      // 'ServiceFrequency': '${client.serviceFrequency.toString()}',
+      'serviceFrequency': '${client.serviceFrequency.toString()}',
       'isConfirmed': isConfirmed,
       'isRescheduling': isRescheduling,
       'noReply': noReply,
@@ -235,7 +259,7 @@ class Appointment {
     };
   }
 
-  factory Appointment.demo() {
+  factory Appointment.demo(Admin admin) {
     return Appointment(
         'eventName',
         DateTime.now(),
@@ -259,6 +283,7 @@ class Appointment {
         serviceCost: 1,
         keyRequired: false,
         flowSID: '',
-        executionSID: '');
+        executionSID: '',
+        admin: admin);
   }
 }

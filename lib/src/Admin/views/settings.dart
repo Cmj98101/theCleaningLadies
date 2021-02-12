@@ -1,5 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:the_cleaning_ladies/notifications/notifications.dart';
+import 'package:the_cleaning_ladies/notification_model/push_notification.dart';
 import 'package:the_cleaning_ladies/src/Admin/views/Settings/quickScheduleSettings.dart';
 import 'package:the_cleaning_ladies/src/Admin/views/Settings/reminderSettings.dart';
 import 'package:the_cleaning_ladies/src/Admin/views/homeScreen.dart';
@@ -123,4 +125,51 @@ class _SettingsState extends State<Settings> {
       ));
     });
   }
+  // List<int> numbers = [];
+  // @override
+  // Widget build(BuildContext context) {
+  //   SizeConfig().init(context);
+
+  //   return Scaffold(
+  //       appBar: AppBar(
+  //         title: Text('Test'),
+  //       ),
+  //       body: Center(
+  //         child: Container(
+  //           child: Column(
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: [
+  //               Container(
+  //                   width: 200,
+  //                   height: 500,
+  //                   child: ListView.builder(
+  //                     itemBuilder: (context, index) {
+  //                       int number = numbers[index];
+  //                       return Container(
+  //                         child: Text(number.toString()),
+  //                       );
+  //                     },
+  //                     itemCount: numbers.length,
+  //                   )),
+  //               RaisedButton(
+  //                 onPressed: () {
+  //                   setState(() {
+  //                     numbers.add(Random().nextInt(200));
+  //                   });
+  //                 },
+  //                 child: Text('ADD'),
+  //               ),
+  //               RaisedButton(
+  //                 onPressed: () {
+  //                   setState(() {
+  //                     numbers[Random().nextInt(5)] = Random().nextInt(500);
+  //                   });
+  //                 },
+  //                 child: Text('Set State'),
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       ));
+  // }
 }

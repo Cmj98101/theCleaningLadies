@@ -40,6 +40,14 @@ class HistoryEvent {
   final bool isConfirmed;
   final double fee;
   final List<service.Service> services;
+  double get servicesFeeOnly {
+    double total = 0.00;
+    services.forEach((service) =>
+        service?.selected ?? false ? total += service.cost : total += 0);
+    return total;
+  }
+
+  double get totalFee => fee + servicesFeeOnly;
   Map month = {
     1: 'Jan.',
     2: 'Feb.',
@@ -79,8 +87,15 @@ class HistoryEvent {
     return HistoryEvent(
         from: (data['from'] as Timestamp).toDate(),
         appointmentId: doc.id,
-        fee: data['fee'],
-        isConfirmed: data['isConfirmed']);
+        fee: (data['fee'] is int)
+            ? (data['fee'] as int).toDouble()
+            : data['fee'],
+        isConfirmed: data['isConfirmed'],
+        services: data['services'] != null
+            ? (doc['services'] as List<dynamic>)
+                .map((map) => service.Service.fromMap(map))
+                .toList()
+            : <service.Service>[]);
   }
   factory HistoryEvent.fromAppointmentDocument(QueryDocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data();

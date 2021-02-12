@@ -8,7 +8,12 @@ class LoadAppointmentsEvent extends AppointmentEvent {
   LoadAppointmentsEvent(this.admin);
 }
 
-class AddAppointmentEvent extends AppointmentEvent {}
+class AddAppointmentEvent extends AppointmentEvent {
+  final Appointment appointment;
+  final Admin admin;
+
+  AddAppointmentEvent(this.appointment, this.admin);
+}
 
 class UpdateAppointmentEvent extends AppointmentEvent {
   final Appointment appointment;

@@ -16,7 +16,8 @@ class FirebaseClientsRepository implements ClientsRepository {
   EasyDB _easyDb = DataBaseRepo();
   @override
   Future<void> addNewClient(Client client) {
-    return _easyDb.createUserData('/Users', client.toDocument());
+    return _easyDb.createUserData('/Users', client.toDocument(),
+        onCreation: (docId) {});
   }
 
   // Future<void> addNewClientDemo(List<Client> demos) async {

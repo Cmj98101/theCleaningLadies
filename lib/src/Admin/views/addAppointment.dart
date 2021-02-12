@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:the_cleaning_ladies/BLoC/Appointments/appointment_event.dart';
 import 'package:the_cleaning_ladies/models/appointment_model/appointment.dart';
+import 'package:the_cleaning_ladies/models/time_tile/time_title.dart';
 import 'package:the_cleaning_ladies/models/user_models/client.dart';
-import 'package:the_cleaning_ladies/src/Admin/views/quickSchedule.dart';
-import 'package:the_cleaning_ladies/src/Admin/views/selectClientForAppointment.dart';
+import 'package:the_cleaning_ladies/notification_model/push_notification.dart';
+import 'package:the_cleaning_ladies/src/admin/views/quickSchedule.dart';
+import 'package:the_cleaning_ladies/src/admin/views/selectClientForAppointment.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/BLoC/Appointments/AppointmentRepo/appointmentRepo.dart';
 import 'package:the_cleaning_ladies/BLoC/Appointments/appointment_bloc.dart';
+import 'package:the_cleaning_ladies/src/admin/views/messageInbox.dart';
 import 'package:the_cleaning_ladies/widgets/PresetWidget.dart';
 
 class AddAppointmentScreen extends StatefulWidget {
@@ -23,6 +26,9 @@ class AddAppointmentScreen extends StatefulWidget {
 
 class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   final formKey = GlobalKey<FormState>();
+  PushNotifications _pushNotifications;
+  List<TimeTile> unconfirmedAppointments;
+
   AppointmentsRepository appointmentsRepository =
       FireBaseAppointmentsRepository();
   Client client = Client();
@@ -50,7 +56,16 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   @override
   void initState() {
     super.initState();
-
+    _pushNotifications = PushNotifications(
+        admin: widget.admin,
+        context: context,
+        isMounted: () => mounted,
+        onNotification: (admin, client) async {
+          return await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MessageInboxScreen(admin, client)));
+        });
     DateTime now = DateTime.now();
     selectedDate = DateTime(now.year, now.month, now.day);
     if (widget.isRescheduling) {
@@ -58,7 +73,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
     }
   }
 
-  void createNewAppointment(Appointment appointment) {
+  void createNewAppointment(dynamic appointment) {
     if (widget.isRescheduling) {
       appointment.client = client;
       appointment.isConfirmed = false;
@@ -69,13 +84,20 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
           .add(UpdateAppointmentEvent(appointment, widget.admin));
       Navigator.pop(context, appointment);
     } else {
-      appointment.client = client;
-      appointment.isConfirmed = false;
-      appointment.isRescheduling = false;
-      appointment.noReply = false;
-      appointment.serviceCost = client.costPerCleaning;
-      appointment.note = client.note;
-      widget.admin.createAppointment(appointment);
+      // appointment.client = client;
+      // appointment.isConfirmed = false;
+      // appointment.isRescheduling = false;
+      // appointment.noReply = false;
+      // appointment.serviceCost = client.costPerCleaning;
+      // appointment.note = client.note;
+      unconfirmedAppointments.forEach((timeTile) {
+        // widget.admin.createAppointment(timeTile.appointment);
+        if (timeTile?.appointment != null) {
+          BlocProvider.of<AppointmentBloc>(context)
+              .add(AddAppointmentEvent(timeTile.appointment, widget.admin));
+        }
+      });
+
       Navigator.pop(context);
     }
   }
@@ -83,6 +105,8 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     Appointment appointment = Appointment.newAppointment();
+    int unconfirmedAppointmentSlots = 100;
+    unconfirmedAppointments = List<TimeTile>(unconfirmedAppointmentSlots);
     if (widget.isRescheduling) {
       setState(() {
         client = widget.appointment.client;
@@ -224,7 +248,11 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                                 admin: widget.admin,
                                 selectedDate: selectedDate,
                                 timeToStart: timeToStart,
+                                client: client,
                                 isQuickSchedule: false,
+                                unconfirmedAppointments:
+                                    unconfirmedAppointments,
+                                isRescheduling: widget.isRescheduling,
                                 rescheduleDateTime: (from) {
                                   appointment.from = from;
                                   appointment.to =
@@ -258,7 +286,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                                 return createNewAppointment(
                                     widget.isRescheduling
                                         ? widget.appointment
-                                        : appointment);
+                                        : unconfirmedAppointments);
                               },
                         child: Text(widget.isRescheduling
                             ? 'Reschedule'

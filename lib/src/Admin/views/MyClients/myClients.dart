@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:the_cleaning_ladies/BLoC/Clients/client_event.dart';
 import 'package:the_cleaning_ladies/models/easy_db/EasyDb.dart';
 import 'package:the_cleaning_ladies/models/user_models/client.dart';
-import 'package:the_cleaning_ladies/notifications/notifications.dart';
+import 'package:the_cleaning_ladies/notification_model/push_notification.dart';
 import 'package:the_cleaning_ladies/src/Admin/views/MyClients/clientTile.dart';
 import 'package:the_cleaning_ladies/src/Admin/views/addClient.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';

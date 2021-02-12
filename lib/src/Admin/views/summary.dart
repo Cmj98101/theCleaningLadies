@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:swipedetector/swipedetector.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/models/size_config.dart';
-import 'package:the_cleaning_ladies/notifications/notifications.dart';
+import 'package:the_cleaning_ladies/notification_model/push_notification.dart';
 
 class WeekDayTotal {
   Map<int, int> weekDayTotals = {};
@@ -25,6 +25,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   @override
   void initState() {
     super.initState();
+    print('Summary');
     futureTotalClients = _getTotalClients();
     futureTotalClientsValue = _getTotalClientsValue();
     _pushNotifications = PushNotifications(

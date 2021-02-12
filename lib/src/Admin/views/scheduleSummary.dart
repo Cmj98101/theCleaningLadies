@@ -249,6 +249,7 @@ class _ScheduleSummaryState extends State<ScheduleSummary> {
                                               String reminderMessage = '';
                                               if (client.templateReminderMsg
                                                   .isEmpty) {
+                                                // TODO: dynamic onCopyMessage editable
                                                 reminderMessage = widget.admin
                                                     .createDynamicMessage(
                                                         widget.admin
@@ -258,16 +259,14 @@ class _ScheduleSummaryState extends State<ScheduleSummary> {
                                                         values: widget.admin
                                                             .templateFillInValues);
                                               } else {
-                                                reminderMessage =
-                                                    reminderMessage = widget
-                                                        .admin
-                                                        .createDynamicMessage(
-                                                            client
-                                                                .templateReminderMsg,
-                                                            appointment,
-                                                            client,
-                                                            values: client
-                                                                .templateFillInValues);
+                                                reminderMessage = widget.admin
+                                                    .createDynamicMessage(
+                                                        client
+                                                            .templateReminderMsg,
+                                                        appointment,
+                                                        client,
+                                                        values: client
+                                                            .templateFillInValues);
                                               }
                                               Clipboard.setData(ClipboardData(
                                                       text: reminderMessage))

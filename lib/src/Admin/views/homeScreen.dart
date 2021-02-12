@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:the_cleaning_ladies/Notifications/notifications.dart';
 import 'package:the_cleaning_ladies/models/appointment_model/appointment.dart';
 import 'package:the_cleaning_ladies/models/easy_db/EasyDb.dart';
-import 'package:the_cleaning_ladies/src/Admin/views/addAppointment.dart';
+import 'package:the_cleaning_ladies/notification_model/notification_model.dart';
+import 'package:the_cleaning_ladies/notification_model/push_notification.dart';
+import 'package:the_cleaning_ladies/src/admin/views/addAppointment.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/src/Auth/authHandler.dart';
 
@@ -157,6 +158,47 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
               // ),
               // CustomIconTile(
               //   onTap: () {
+              //     print('Sending Notification');
+              //     _pushNotifications.scheduledNotification();
+              //   },
+              //   title: 'Send Notification',
+              //   icon: FontAwesomeIcons.arrowAltCircleRight,
+              // ),
+              // CustomIconTile(
+              //   onTap: () async {
+              //     print('change appointments');
+              //     widget.admin.changeAllAppointments();
+              //   },
+              //   title: 'change appointments',
+              //   icon: FontAwesomeIcons.arrowAltCircleRight,
+              // ),
+              CustomIconTile(
+                onTap: () async {
+                  print('create 54 Notifications');
+                  // List<NotificationModel> awaitingNotifications =
+                  //     await widget.admin.fetchAwaitingNotifications();
+                  // awaitingNotifications.forEach((notification) {
+                  //   notification.ref.delete();
+                  // });
+                  for (var i = 0; i < 54; i++) {
+                    widget.admin.ref.collection('Notifications').add(
+                        NotificationModel(
+                                title: '$i',
+                                body: '$i',
+                                id: i,
+                                payload: '$i',
+                                ref: null,
+                                reminderFor: DateTime.now()
+                                    .add(Duration(minutes: 2, seconds: i + 5)),
+                                isSet: false)
+                            .toDoc());
+                  }
+                },
+                title: 'create 54 Notifications',
+                icon: FontAwesomeIcons.arrowAltCircleRight,
+              ),
+              // CustomIconTile(
+              //   onTap: () {
               //     print('Change All services');
               //     widget.admin.changeTypes();
               //   },
@@ -204,7 +246,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           FlatButton(
               onPressed: () async {
                 futureAppointments = await widget.admin.getFutureAppointments();
-
                 setState(() {
                   viewFutureAppointments = !viewFutureAppointments;
                 });
@@ -238,6 +279,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
         widget.admin,
         viewFutureAppointments: viewFutureAppointments,
         futureAppointments: futureAppointments,
+        addNotifications: () {},
       ),
     );
   }

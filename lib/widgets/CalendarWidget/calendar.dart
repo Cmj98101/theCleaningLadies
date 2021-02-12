@@ -16,8 +16,11 @@ class CalendarWidget extends StatefulWidget {
   final Admin admin;
   final List<Appointment> futureAppointments;
   final bool viewFutureAppointments;
+  final Function() addNotifications;
   CalendarWidget(this.admin,
-      {this.viewFutureAppointments, this.futureAppointments});
+      {this.viewFutureAppointments,
+      this.futureAppointments,
+      this.addNotifications});
   @override
   _CalendarWidgetState createState() => _CalendarWidgetState();
 }

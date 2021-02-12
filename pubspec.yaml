@@ -27,14 +27,18 @@ dependencies:
   firebase_auth: ^0.18.4+1
   cloud_firestore: ^0.14.4
   firebase_messaging: ^7.0.3
+  scroll_to_index: ^1.0.6
+  # firebase_analytics: ^7.0.1
   font_awesome_flutter: ^8.10.0
   swipedetector: ^1.2.0
   flutter_app_badger: ^1.1.2
+  flutter_local_notifications: ^3.0.3
+  rxdart: ^0.25.0
   #firebase_messaging: ^6.0.16
   # flutter_svg: ^0.17.4
-  syncfusion_flutter_core: ^18.4.31
-  syncfusion_flutter_calendar: ^18.4.31
-  syncfusion_flutter_datepicker: ^18.4.31-beta
+  syncfusion_flutter_core: ^18.4.34
+  syncfusion_flutter_calendar: ^18.4.34
+  syncfusion_flutter_datepicker: ^18.4.34-beta
   intl: ^0.16.1
   date_utils: ^0.1.0+3
   flutter_bloc: ^6.1.0

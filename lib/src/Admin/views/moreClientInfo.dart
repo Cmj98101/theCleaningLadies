@@ -476,11 +476,11 @@ class _ShowHistoryState extends State<ShowHistory> {
                       if (snap.hasData) {
                         total = 0;
                         snap.data.forEach(
-                            (historyEvent) => total += historyEvent.fee);
+                            (historyEvent) => total += historyEvent.totalFee);
                       }
                       return snap.hasData
                           ? Text(
-                              '\$$total',
+                              '\$${total.truncate()}',
                               style: TextStyle(
                                   fontSize:
                                       SizeConfig.safeBlockHorizontal * 4.5,
@@ -648,7 +648,7 @@ class HistoryEventTile extends StatelessWidget {
                     margin: EdgeInsets.only(
                         right: SizeConfig.safeBlockHorizontal * 6),
                     child: Text(
-                      '\$${historyEvent.fee}',
+                      '\$${historyEvent.totalFee.truncate()}',
                       style: TextStyle(
                           fontSize: SizeConfig.safeBlockHorizontal * 4.5,
                           fontWeight: FontWeight.bold),

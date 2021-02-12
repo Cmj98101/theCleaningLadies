@@ -41,6 +41,9 @@ class _QuickScheduleSettingsState extends State<QuickScheduleSettings> {
   void initState() {
     super.initState();
     _scheduleSettings = ScheduleSettings(
+        leadTime: widget.admin.scheduleSettings.leadTime,
+        reminderNotificationTime:
+            widget.admin.scheduleSettings.reminderNotificationTime,
         timePerService: widget.admin.scheduleSettings.timePerService,
         timeBetweenService: widget.admin.scheduleSettings.timePerService,
         servicesPerGroup: 4);
@@ -55,6 +58,28 @@ class _QuickScheduleSettingsState extends State<QuickScheduleSettings> {
       margin: EdgeInsets.only(top: 30, right: 10, left: 10),
       child: Column(
         children: [
+          SettingsDescriptionTile(
+            titleText: 'Advanced Reminder Time',
+            child: LapseTimeField(
+              admin: widget.admin,
+              onChange: (elapseTime) {
+                _scheduleSettings.reminderNotificationTime = elapseTime;
+              },
+              scheduleSettings: ss,
+              elapsedTime: ss.reminderNotificationTime,
+            ),
+          ),
+          SettingsDescriptionTile(
+            titleText: 'Service Lead Time',
+            child: LapseTimeField(
+              admin: widget.admin,
+              onChange: (elapseTime) {
+                _scheduleSettings.leadTime = elapseTime;
+              },
+              scheduleSettings: ss,
+              elapsedTime: ss.leadTime,
+            ),
+          ),
           SettingsDescriptionTile(
             titleText: 'Time Taken per service',
             child: LapseTimeField(
@@ -78,7 +103,7 @@ class _QuickScheduleSettingsState extends State<QuickScheduleSettings> {
             ),
           ),
           SettingsDescriptionTile(
-            titleText: 'Houses Per Group',
+            titleText: 'Services Per Group',
             child: AnimatedInputField(
               admin: widget.admin,
               scheduleSettings: ss,
@@ -118,7 +143,7 @@ class _AnimatedInputFieldState extends State<AnimatedInputField> {
                 duration: Duration(milliseconds: 1500),
                 curve: Curves.elasticInOut,
                 width: valueDifferent
-                    ? SizeConfig.safeBlockHorizontal * 31
+                    ? SizeConfig.safeBlockHorizontal * 26
                     : SizeConfig.safeBlockHorizontal * 15,
                 margin: EdgeInsets.all(10),
                 child: Row(

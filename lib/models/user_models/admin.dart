@@ -8,35 +8,59 @@ import 'package:the_cleaning_ladies/models/SMS/message.dart';
 import 'package:the_cleaning_ladies/models/user_models/user.dart';
 import 'package:the_cleaning_ladies/models/history_event.dart';
 import 'package:the_cleaning_ladies/models/appointment_model/appointment.dart';
+import 'package:the_cleaning_ladies/notification_model/notification_model.dart';
 import 'package:twilioFlutter/models/sms.dart';
 import 'package:twilioFlutter/twilioFlutter.dart';
 import 'package:the_cleaning_ladies/models/service/service.dart' as service;
 
 class ElapsedTime {
+  int days;
   int hour;
   int min;
-  ElapsedTime({@required this.hour, @required this.min});
+  ElapsedTime({this.days, @required this.hour, @required this.min});
   int get totalInMin => ((hour * 60) + min);
 
   Map<String, Object> toDocument() {
-    return {'hour': hour, 'min': min};
+    return {'days': days ?? 0, 'hour': hour ?? 0, 'min': min ?? 0};
   }
 }
 
 class ScheduleSettings {
   ElapsedTime timePerService;
   ElapsedTime timeBetweenService;
+  ElapsedTime leadTime;
+  ElapsedTime reminderNotificationTime;
+  Duration get remindBeforeTime => Duration(
+      days: reminderNotificationTime.days,
+      hours: reminderNotificationTime.hour,
+      minutes: reminderNotificationTime.min);
+  String get reminderInDays =>
+      '${reminderNotificationTime.days == 0 ? '' : reminderNotificationTime.days == 1 ? '${reminderNotificationTime.days} day' : '${reminderNotificationTime.days} days'}';
+  String get reminderInHour =>
+      '${reminderNotificationTime.hour == 0 ? '' : reminderNotificationTime.hour == 1 ? '${reminderNotificationTime.hour} hr.' : '${reminderNotificationTime.hour} hrs.'}';
+
+  String get reminderInMin =>
+      '${reminderNotificationTime.min == 0 ? '' : reminderNotificationTime.min == 1 ? '${reminderNotificationTime.min} min.' : '${reminderNotificationTime.min} minutes'}';
+
+  String get remindBeforeTimeToString {
+    return '$reminderInDays $reminderInHour $reminderInMin';
+  }
+
   int servicesPerGroup;
   ScheduleSettings(
       {@required this.timePerService,
       @required this.timeBetweenService,
-      @required this.servicesPerGroup});
+      @required this.servicesPerGroup,
+      @required this.reminderNotificationTime,
+      @required this.leadTime});
 
   Map<String, Object> toDocument() {
     return {
       'servicesPerGroup': servicesPerGroup,
       'timeBetweenService': timeBetweenService.toDocument(),
-      'timePerService': timePerService.toDocument()
+      'timePerService': timePerService.toDocument(),
+      'leadTime': leadTime.toDocument(),
+      'remindBeforeTime': reminderNotificationTime.toDocument()
     };
   }
 
@@ -46,11 +70,21 @@ class ScheduleSettings {
     return ScheduleSettings(
         servicesPerGroup: doc['scheduleSettings']['servicesPerGroup'],
         timeBetweenService: ElapsedTime(
-            hour: doc['scheduleSettings']['timeBetweenService']['hour'],
-            min: doc['scheduleSettings']['timeBetweenService']['min']),
+            days: (doc['scheduleSettings']['timeBetweenService']['days']) ?? 0,
+            hour: (doc['scheduleSettings']['timeBetweenService']['hour']) ?? 0,
+            min: (doc['scheduleSettings']['timeBetweenService']['min']) ?? 0),
         timePerService: ElapsedTime(
-            hour: doc['scheduleSettings']['timePerService']['hour'],
-            min: doc['scheduleSettings']['timePerService']['min']));
+            days: (doc['scheduleSettings']['timePerService']['days']) ?? 0,
+            hour: (doc['scheduleSettings']['timePerService']['hour']) ?? 0,
+            min: (doc['scheduleSettings']['timePerService']['min']) ?? 0),
+        reminderNotificationTime: ElapsedTime(
+            days: (doc['scheduleSettings']['remindBeforeTime']['days']) ?? 0,
+            hour: (doc['scheduleSettings']['remindBeforeTime']['hour']) ?? 0,
+            min: (doc['scheduleSettings']['remindBeforeTime']['min']) ?? 0),
+        leadTime: ElapsedTime(
+            days: (doc['scheduleSettings']['leadTime']['days']) ?? 0,
+            hour: (doc['scheduleSettings']['leadTime']['hour']) ?? 0,
+            min: (doc['scheduleSettings']['leadTime']['min']) ?? 0));
   }
 }
 
@@ -177,15 +211,31 @@ class Admin extends User {
 
   List<TimeTile> generateAvailabilities(DateTime selectedDate,
       DateTime timeToStart, List<Appointment> reservedTimes) {
+    assert(selectedDate != null);
+    assert(timeToStart != null);
+    assert(reservedTimes != null);
+
     List<TimeTile> _availableTimes = [];
     for (var i = 0; i < scheduleSettings.servicesPerGroup; i++) {
       i == 0
-          ? _availableTimes.add(TimeTile(selectedDate
-              .add(Duration(
-                  hours: timeToStart.hour, minutes: timeToStart.minute))
-              .add(Duration(
-                minutes: ((scheduleSettings.timePerService.totalInMin * i)),
-              ))))
+          ? _availableTimes.add(TimeTile(
+              selectedDate
+                  .add(Duration(
+                      hours: timeToStart.hour, minutes: timeToStart.minute))
+                  .add(Duration(
+                    minutes: ((scheduleSettings.timePerService.totalInMin * i)),
+                  )),
+              this,
+              orignalTime: selectedDate
+                  .add(Duration(
+                      hours: timeToStart.hour, minutes: timeToStart.minute))
+                  .add(Duration(
+                    minutes: (scheduleSettings.timePerService.totalInMin +
+                            scheduleSettings.timeBetweenService.totalInMin) *
+                        i,
+                  )),
+              timeSlotTaken: false,
+              undoAvailable: false))
           : _availableTimes.add(TimeTile(
               selectedDate
                   .add(Duration(
@@ -195,10 +245,31 @@ class Admin extends User {
                             scheduleSettings.timeBetweenService.totalInMin) *
                         i,
                   )),
-            ));
+              this,
+              orignalTime: selectedDate
+                  .add(Duration(
+                      hours: timeToStart.hour, minutes: timeToStart.minute))
+                  .add(Duration(
+                    minutes: (scheduleSettings.timePerService.totalInMin +
+                            scheduleSettings.timeBetweenService.totalInMin) *
+                        i,
+                  )),
+              timeSlotTaken: false,
+              undoAvailable: false));
     }
     _availableTimes = removeReservedTimes(_availableTimes, reservedTimes);
     return _availableTimes;
+  }
+
+  Future<List<NotificationModel>> fetchAwaitingNotifications(
+      {bool isSet = false}) async {
+    QuerySnapshot snap = await _db
+        .collection('Users/$id/Notifications')
+        .where('isSet', isEqualTo: isSet)
+        // .orderBy('reminderFor')
+        .get();
+
+    return snap.docs.map((doc) => NotificationModel.fromDoc(doc)).toList();
   }
 
   List<TimeTile> removeReservedTimes(
@@ -253,7 +324,8 @@ class Admin extends User {
       return await _db.runTransaction((transaction) async {
         DocumentSnapshot freshAdminSnap = await transaction.get(ref);
         int newAdminNotificationCount = freshAdminSnap.get('notificationCount');
-        print('$newAdminNotificationCount');
+        print(
+            'Transaction Admin Notification count $newAdminNotificationCount');
         notificationCount = newAdminNotificationCount;
         onDone();
         // print('Done Checking Notifications');
@@ -324,6 +396,15 @@ class Admin extends User {
     print(_appointments.length);
     _appointments.forEach((appointment) => total += appointment.serviceCost);
     return total;
+  }
+
+  void changeAllAppointments() async {
+    List<Appointment> _appointments = await _getAppointments();
+    _appointments.forEach((appointment) async {
+      Client client = await getClient('Users/${appointment.client.id}');
+      appointment.ref
+          .update({'serviceFrequency': client.serviceFrequency.toString()});
+    });
   }
 
   Future<List<Appointment>> _getAppointments(
@@ -702,8 +783,11 @@ There is no better time than the holidays to reminisce on the past year. It has 
     return await _easyDb.createUserData(
         'Users/$id/Appointments', appointment.toDocument(),
         duplicateDoc: true,
-        duplicatedCollectionPath: 'Users/${_client.id}/Cleaning History',
-        duplicatedData: HistoryEvent.fromAppointment(appointment).toDocument());
+        duplicatedCollectionPath: ['Users/${_client.id}/Cleaning History'],
+        duplicatedData: [
+          HistoryEvent.fromAppointment(appointment).toDocument()
+        ],
+        onCreation: (docId) {});
   }
 
   void createSchedule() async {
@@ -766,8 +850,14 @@ There is no better time than the holidays to reminisce on the past year. It has 
       'templateFillInValues': [],
       'scheduleSettings': ScheduleSettings(
               servicesPerGroup: 4,
-              timeBetweenService: ElapsedTime(hour: 00, min: 20),
-              timePerService: ElapsedTime(hour: 2, min: 00))
+              timeBetweenService: ElapsedTime(days: 0, hour: 00, min: 20),
+              timePerService: ElapsedTime(days: 0, hour: 2, min: 00),
+              leadTime: ElapsedTime(
+                days: 0,
+                hour: 0,
+                min: 45,
+              ),
+              reminderNotificationTime: ElapsedTime(days: 0, hour: 2, min: 0))
           .toDocument(),
       'apiPN': '',
       'notificationCount': 0,

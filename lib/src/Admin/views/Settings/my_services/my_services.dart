@@ -95,6 +95,7 @@ class _MyServicesState extends State<MyServices> {
                                     return Container(
                                       child: ServiceTile(
                                         service: service,
+                                        onlyShowing: true,
                                       ),
                                     );
                                   }).toList(),
@@ -123,7 +124,11 @@ class ServiceTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Card(
-        color: service.selected ? Colors.green : Colors.white,
+        color: onlyShowing
+            ? Colors.white
+            : service.selected
+                ? Colors.green
+                : Colors.white,
         elevation: 4,
         child: Container(
           margin: EdgeInsets.all(10),
@@ -152,7 +157,7 @@ class ServiceTile extends StatelessWidget {
                   ),
                 ],
               ),
-              onlyShowing
+              !onlyShowing
                   ? Container()
                   : IconButton(
                       icon: Icon(Icons.delete),

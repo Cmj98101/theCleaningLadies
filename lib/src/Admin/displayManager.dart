@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:the_cleaning_ladies/models/easy_db/EasyDb.dart';
-import 'package:the_cleaning_ladies/src/Admin/views/homeScreen.dart';
-import 'package:the_cleaning_ladies/src/Admin/views/MyClients/myClients.dart';
-import 'package:the_cleaning_ladies/src/Admin/views/quickSchedule.dart';
-import 'package:the_cleaning_ladies/src/Admin/views/settings.dart';
-import 'package:the_cleaning_ladies/src/Admin/views/summary.dart';
+import 'package:the_cleaning_ladies/src/admin/views/homeScreen.dart';
+import 'package:the_cleaning_ladies/src/admin/views/MyClients/myClients.dart';
+import 'package:the_cleaning_ladies/src/admin/views/quickSchedule.dart';
+import 'package:the_cleaning_ladies/src/admin/views/settings.dart';
+import 'package:the_cleaning_ladies/src/admin/views/summary.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/widgets/bottomNavigation/bottomMenu.dart';
 

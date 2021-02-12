@@ -3,7 +3,7 @@ import 'package:the_cleaning_ladies/models/size_config.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/models/SMS/message.dart';
 import 'package:the_cleaning_ladies/models/user_models/client.dart';
-import 'package:the_cleaning_ladies/notifications/notifications.dart';
+import 'package:the_cleaning_ladies/notification_model/push_notification.dart';
 import 'package:the_cleaning_ladies/src/admin/views/Settings/find_phone_number.dart';
 
 class MessageInboxScreen extends StatefulWidget {

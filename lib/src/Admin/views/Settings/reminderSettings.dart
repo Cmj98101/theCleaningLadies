@@ -106,7 +106,7 @@ class _EditReminderTemplateState extends State<EditReminderTemplate> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     Client client = Client.demo();
-    Appointment appointment = Appointment.demo();
+    Appointment appointment = Appointment.demo(widget.admin);
     Map<String, Object> clientAttributes = client.toDocument();
     Map<String, Object> appointmentAttributes = appointment.toDocument();
     List<String> clientKeys = [];

@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:the_cleaning_ladies/BLoC/Appointments/appointment_bloc.dart';
+import 'package:the_cleaning_ladies/BLoC/Appointments/appointment_event.dart';
 import 'package:the_cleaning_ladies/models/appointment_model/appointment.dart';
+import 'package:the_cleaning_ladies/models/service/service.dart';
 import 'package:the_cleaning_ladies/models/time_tile/time_title.dart';
-import 'package:the_cleaning_ladies/notifications/notifications.dart';
-import 'package:the_cleaning_ladies/src/Admin/views/Settings/quickScheduleSettings.dart';
+import 'package:the_cleaning_ladies/models/user_models/client.dart';
+import 'package:the_cleaning_ladies/notification_model/push_notification.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/BLoC/Appointments/AppointmentRepo/appointmentRepo.dart';
 import 'package:the_cleaning_ladies/src/Admin/views/messageInbox.dart';
 import 'package:the_cleaning_ladies/src/Admin/views/scheduleSummary.dart';
+import 'package:the_cleaning_ladies/src/admin/views/Settings/quickScheduleSettings.dart';
 import 'package:the_cleaning_ladies/widgets/PresetWidget.dart';
 import 'package:the_cleaning_ladies/models/size_config.dart';
-import 'package:the_cleaning_ladies/src/Admin/views/display_available_slots.dart';
+import 'package:the_cleaning_ladies/src/admin/views/display_available_slots.dart';
 
 class QuickScheduleScreen extends StatefulWidget {
   final Admin admin;
@@ -29,7 +34,7 @@ class _QuickScheduleScreenState extends State<QuickScheduleScreen> {
   PushNotifications _pushNotifications;
   AppointmentsRepository appointmentsRepository =
       FireBaseAppointmentsRepository();
-  List<TimeTile> unconfirmedAppointments = [];
+  List<TimeTile> unconfirmedAppointments;
   List<TimeTile> listForSummary = [];
 
   @override
@@ -56,6 +61,8 @@ class _QuickScheduleScreenState extends State<QuickScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int unconfirmedAppointmentSlots = 100;
+    unconfirmedAppointments = List<TimeTile>(unconfirmedAppointmentSlots);
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
@@ -179,18 +186,29 @@ class _QuickScheduleScreenState extends State<QuickScheduleScreen> {
               !dateSelected || timeToStart == null
                   ? Container()
                   : startTimeSelected
-                      ? BuildAvailibilityView(
-                          admin: widget.admin,
-                          selectedDate: selectedDate,
-                          timeToStart: timeToStart,
-                          isQuickSchedule: true,
-                          onSummaryReady: (availableTimes) =>
-                              listForSummary = availableTimes,
-                          appointmentsToConfirm: (appointments) {
-                            // setState(() {
-                            unconfirmedAppointments = appointments;
-                            // });
-                          },
+                      ? Container(
+                          // color: Colors.red,
+                          child: BuildAvailibilityView(
+                            admin: widget.admin,
+                            selectedDate: selectedDate,
+                            timeToStart: timeToStart,
+                            isQuickSchedule: true,
+                            unconfirmedAppointments: unconfirmedAppointments,
+                            onSummaryReady: (availableTimes) =>
+                                listForSummary = availableTimes,
+                            appointmentsToConfirm: (appointments) {
+                              // setState(() {
+                              // appointments
+                              //     .removeWhere((timeTile) => timeTile == null);
+                              // appointments.forEach((timeTile) {
+                              //   if (timeTile != null) {
+                              //     unconfirmedAppointments.add(timeTile);
+                              //   }
+                              // });
+                              // // unconfirmedAppointments = appointments;
+                              // });
+                            },
+                          ),
                         )
                       : Container(),
               Padding(
@@ -235,7 +253,6 @@ class _QuickScheduleScreenState extends State<QuickScheduleScreen> {
       print(time);
       setState(() {
         timeToStart = null;
-        selectedDate = null;
       });
     }
   }
@@ -270,7 +287,11 @@ class _QuickScheduleScreenState extends State<QuickScheduleScreen> {
     if (unconfirmedAppointments.isNotEmpty) {
       setState(() {
         unconfirmedAppointments.forEach((timeTile) {
-          widget.admin.createAppointment(timeTile.appointment);
+          // widget.admin.createAppointment(timeTile.appointment);
+          if (timeTile?.appointment != null) {
+            BlocProvider.of<AppointmentBloc>(context)
+                .add(AddAppointmentEvent(timeTile.appointment, widget.admin));
+          }
         });
       });
     } else {
@@ -300,18 +321,25 @@ class _QuickScheduleScreenState extends State<QuickScheduleScreen> {
 
 class BuildAvailibilityView extends StatefulWidget {
   final Admin admin;
+  final Client client;
   final DateTime selectedDate;
   final DateTime timeToStart;
   final Function(DateTime) rescheduleDateTime;
   final Function(List<TimeTile>) onSummaryReady;
   final Function(List<TimeTile>) appointmentsToConfirm;
   final bool isQuickSchedule;
+  final bool isRescheduling;
+
+  final List<TimeTile> unconfirmedAppointments;
   BuildAvailibilityView(
       {@required this.selectedDate,
       @required this.timeToStart,
       @required this.admin,
+      this.unconfirmedAppointments,
+      this.isRescheduling = false,
       this.rescheduleDateTime,
       this.onSummaryReady,
+      this.client,
       this.appointmentsToConfirm,
       @required this.isQuickSchedule});
 
@@ -322,14 +350,14 @@ class BuildAvailibilityView extends StatefulWidget {
 class _BuildAvailibilityViewState extends State<BuildAvailibilityView> {
   AppointmentsRepository appointmentsRepository =
       FireBaseAppointmentsRepository();
-
+  List<TimeTile> availableTimes;
+  bool slotAdded = false;
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
           Container(
             child: ITextHeading(
               '@',
@@ -350,31 +378,208 @@ class _BuildAvailibilityViewState extends State<BuildAvailibilityView> {
                   assert(reservedTimes != null);
                   reservedTimes
                       .removeWhere((appointment) => checkDateSame(appointment));
-                  List<TimeTile> availableTimes = [];
+                  availableTimes = List<TimeTile>(
+                      widget.admin.scheduleSettings.servicesPerGroup);
                   availableTimes = widget.admin.generateAvailabilities(
                       widget.selectedDate, widget.timeToStart, reservedTimes);
 
                   if (reservedTimes.length != 0) {
                     print('reserved Times != 0');
                     for (var reserved in reservedTimes) {
-                      availableTimes.add(TimeTile(reserved.from,
+                      availableTimes.add(TimeTile(reserved.from, widget.admin,
                           appointment: reserved,
                           timeSlotTaken: true,
-                          color: Colors.green));
+                          color: Colors.green,
+                          orignalTime: reserved.from));
                     }
                   }
+                  int reservedAppointments = 0;
+                  int openSlots = 0;
+                  for (var time in availableTimes) {
+                    if (time.timeSlotTaken == true) {
+                      reservedAppointments += 1;
+                    }
+                  }
+
+                  if (widget.admin.scheduleSettings.servicesPerGroup <
+                      availableTimes.length) {
+                    int availableTimesNeeded =
+                        widget.admin.scheduleSettings.servicesPerGroup -
+                            reservedAppointments;
+
+                    removeAllExtraSlots(availableTimes, reservedAppointments);
+
+                    availableTimes.sort(
+                        (date1, date2) => date1.time.compareTo(date2.time));
+                    Map<String, dynamic> first =
+                        firstAppointmentOfTheDay(availableTimes);
+                    if (first['firstIndex'] != 0) {
+                      availableTimes.removeRange(1, first['firstIndex']);
+                    }
+
+                    for (var time in availableTimes) {
+                      if (time.timeSlotTaken == false) {
+                        openSlots += 1;
+                      }
+                    }
+                    availableTimesNeeded =
+                        widget.admin.scheduleSettings.servicesPerGroup -
+                            (reservedAppointments + openSlots);
+                    for (var i = 0; i < availableTimesNeeded; i++) {
+                      int addedSlots =
+                          checkForAvailableSlotsInBetween(availableTimes);
+                      if (addedSlots >= availableTimesNeeded) {
+                        break;
+                      } else if (addedSlots < availableTimesNeeded) {
+                        i += addedSlots;
+                        availableTimes.sort(
+                            (date1, date2) => date1.time.compareTo(date2.time));
+                      }
+
+                      int lastOfTakenSlots = availableTimes.length - 1;
+                      TimeTile lastTakenSlot = availableTimes[lastOfTakenSlots];
+                      Appointment lastTakenSlotAppointment =
+                          lastTakenSlot.appointment;
+                      int addedMinutes = 0;
+
+                      if (i == 0) {
+                        // TimeTile newSlot = availableTimes[i];
+                        if (lastTakenSlotAppointment != null) {
+                          lastTakenSlot.appointment.services.forEach((service) {
+                            if (service.selected) {
+                              addedMinutes += service.duration.inMinutes;
+                            }
+                          });
+                        }
+
+                        if (addedMinutes == 0) {
+                          if (widget.isRescheduling) {
+                            lastTakenSlot =
+                                availableTimes[lastOfTakenSlots - 1];
+                          }
+                          availableTimes.add(TimeTile.clone(lastTakenSlot,
+                              newTime: lastTakenSlot.time.add(Duration(
+                                  hours: widget.admin.scheduleSettings
+                                          .timePerService.hour +
+                                      widget.admin.scheduleSettings
+                                          .timeBetweenService.hour,
+                                  minutes: widget.admin.scheduleSettings
+                                          .timePerService.min +
+                                      widget.admin.scheduleSettings
+                                          .timeBetweenService.min)),
+                              copyAppointment: false,
+                              color: Colors.white,
+                              timeSlotTaken: false,
+                              appointment: null));
+                          continue;
+                        }
+
+                        availableTimes.add(TimeTile.clone(
+                          lastTakenSlot,
+                          newTime: lastTakenSlot.time.add(Duration(
+                              hours: widget.admin.scheduleSettings
+                                  .timeBetweenService.hour,
+                              minutes: addedMinutes +
+                                  widget.admin.scheduleSettings
+                                      .timeBetweenService.min)),
+                          orignalTimeSameAsNewTime: true,
+                          copyAppointment: false,
+                          timeSlotTaken: false,
+                          color: Colors.white,
+                          appointment: null,
+                        ));
+                      } else {
+                        availableTimes.add(TimeTile.clone(
+                          lastTakenSlot,
+                          newTime: lastTakenSlot.time.add(Duration(
+                              hours: widget
+                                  .admin.scheduleSettings.timePerService.hour,
+                              minutes: widget
+                                  .admin.scheduleSettings.timePerService.min)),
+                          orignalTimeSameAsNewTime: true,
+                          copyAppointment: false,
+                          color: Colors.white,
+                          timeSlotTaken: false,
+                          appointment: null,
+                        ));
+                      }
+                    }
+                  } else {
+                    for (var i = 0; i < availableTimes.length; i++) {
+                      TimeTile currentSlot = availableTimes[i];
+                      Appointment currentSlotAppointment =
+                          currentSlot?.appointment;
+                      bool appointmentIsConfirmed =
+                          currentSlot.appointment?.isConfirmed ?? false;
+                      TimeTile nextSlot;
+                      Appointment nextSlotAppointment;
+                      bool nextSlotIsConfirmed;
+                      assert(currentSlot != null);
+                      assert(currentSlot.timeSlotTaken != null);
+
+                      if (currentSlot.timeSlotTaken) {
+                        int addedMinutes = 0;
+                        if (currentSlotAppointment != null) {
+                          currentSlot.appointment.services.forEach((service) {
+                            if (service.selected) {
+                              addedMinutes += service.duration.inMinutes;
+                            }
+                          });
+                        }
+
+                        if (addedMinutes == 0) {
+                          continue;
+                        }
+
+                        if (!isLastItemInList(availableTimes, i)) {
+                          // TODO: Not calculating travel time maybe implement in the future
+
+                          nextSlot = availableTimes[i + 1];
+                          nextSlotAppointment = nextSlot?.appointment;
+                          nextSlotIsConfirmed =
+                              nextSlotAppointment?.isConfirmed ?? false;
+
+                          availableTimes[i + 1] = TimeTile.clone(
+                            availableTimes[i + 1],
+                            newTime: currentSlot.time
+                                .add(Duration(minutes: addedMinutes)),
+                          );
+
+                          continue;
+                        } else {
+                          if (availableTimes[i].appointment != null) {
+                            continue;
+                          }
+                          TimeTile lastTakenSlot = availableTimes[i - 1];
+
+                          availableTimes[i] = TimeTile.clone(availableTimes[i],
+                              newTime: lastTakenSlot.time.add(Duration(
+                                  hours: widget.admin.scheduleSettings
+                                      .timePerService.hour,
+                                  minutes: widget.admin.scheduleSettings
+                                      .timePerService.min)));
+                          continue;
+                        }
+                      }
+                    }
+                  }
+
                   if (widget.isQuickSchedule) {
                     widget.onSummaryReady(availableTimes);
                   }
 
                   return DisplayAvailableTimesWidget(
+                    widget.selectedDate,
                     availableTimes,
                     widget.isQuickSchedule,
+                    client: widget.isQuickSchedule ? null : widget.client,
                     rescheduleDateTime: (DateTime from) {
                       widget.rescheduleDateTime(from);
                     },
-                    appointmentsToConfirm: (appointments) =>
-                        widget.appointmentsToConfirm(appointments),
+                    isRescheduling: widget.isRescheduling,
+                    unconfirmedAppointments: widget.unconfirmedAppointments,
+                    // appointmentsToConfirm: (appointments) =>
+                    //     widget.appointmentsToConfirm(appointments),
                     admin: widget.admin,
                   );
                   break;
@@ -388,7 +593,61 @@ class _BuildAvailibilityViewState extends State<BuildAvailibilityView> {
               return Container();
             },
           )),
-        ]));
+        ]);
+  }
+
+  bool isLastItemInList(List list, int index) {
+    if (list.length - 1 < index + 1) {
+      return true;
+    }
+    return false;
+  }
+
+  Map<String, dynamic> firstAppointmentOfTheDay(
+    List<TimeTile> availableTimes,
+  ) {
+    DateTime firstAppointment;
+    int firstAppointmentIndex = 0;
+    availableTimes.sort((date1, date2) => date1.time.compareTo(date2.time));
+    for (int i = 0; i < availableTimes.length; i++) {
+      if (availableTimes[i].timeSlotTaken) {
+        print(availableTimes[i].fromTimeFormatted);
+        firstAppointment = availableTimes[i].time;
+        firstAppointmentIndex = i;
+        break;
+      }
+    }
+    return {'first': firstAppointment, 'firstIndex': firstAppointmentIndex};
+  }
+
+  void removeAllExtraSlots(
+      List<TimeTile> availableTimes, int availableTimesNeeded) {
+    List<TimeTile> timesBeforeFirstTimeSlot = [];
+    DateTime firstAppointment =
+        firstAppointmentOfTheDay(availableTimes)['first'];
+    availableTimes.forEach((timeTile) {
+      if (timeTile.time.isBefore(firstAppointment)) {
+        timesBeforeFirstTimeSlot.add(TimeTile.clone(timeTile));
+      }
+    });
+
+    availableTimes
+        .sort((timeTile1, timeTile2) => timeTile1.timeSlotTaken ? 0 : 1);
+
+    availableTimes.removeRange(availableTimesNeeded, availableTimes.length);
+    timesBeforeFirstTimeSlot.forEach((timeTile) {
+      availableTimes.add(timeTile);
+    });
+  }
+
+  List<TimeTile> getAvailableSlots(
+      List<TimeTile> availableTimes, int start, int listSize) {
+    List<TimeTile> extraSlots = List<TimeTile>(listSize);
+    extraSlots =
+        availableTimes.getRange(start, availableTimes.length - 1).toList();
+    availableTimes.removeRange(start, availableTimes.length - 1);
+    availableTimes.sort((date1, date2) => date1.time.compareTo(date2.time));
+    return extraSlots;
   }
 
   bool checkDateSame(Appointment appointment) {
@@ -398,5 +657,86 @@ class _BuildAvailibilityViewState extends State<BuildAvailibilityView> {
       return true;
     }
     return false;
+  }
+
+  int shortestService(TimeTile time) {
+    int inMinutes = 0;
+    List<Service> services = time.appointment.services;
+    for (var i = 0; i < services.length; i++) {
+      if (i == 0) {
+        inMinutes = services[i].duration.inMinutes;
+      }
+      if (services[i].duration.inMinutes < inMinutes) {
+        inMinutes = services[i].duration.inMinutes;
+      }
+    }
+    print('Shortest Duration inMinutes: $inMinutes ');
+    return inMinutes;
+  }
+
+  int checkForAvailableSlotsInBetween(List<TimeTile> timeSlots) {
+    int servicesSelected = 0;
+    int addedSlots = 0;
+    int addedMinutes = 0;
+    for (var i = 0; i < timeSlots.length; i++) {
+      if (timeSlots[i].appointment != null) {
+        timeSlots[i].appointment.services.forEach((service) {
+          if (service.selected) {
+            servicesSelected++;
+            addedMinutes += service.duration.inMinutes;
+          }
+        });
+
+        if (isLastItemInList(timeSlots, i)) break;
+        DateTime currentSlotTime = timeSlots[i].time;
+        DateTime nextSlotTime = timeSlots[i + 1].time;
+        if (withAddedTimeIsAtSameMomentAs(
+                currentSlotTime, nextSlotTime, addedMinutes) ||
+            withDefaultTimeIsAtSameMomentAs(
+              currentSlotTime,
+              nextSlotTime,
+            )) {
+          continue;
+        } else if (nextSlotTime
+            .isAfter(currentSlotTime.add(Duration(minutes: addedMinutes)))) {
+          Duration difference = nextSlotTime
+              .difference(currentSlotTime.add(Duration(minutes: addedMinutes)));
+          int shortestServiceDuration = shortestService(timeSlots[i]);
+          if (difference.inMinutes >=
+              shortestServiceDuration +
+                  widget.admin.scheduleSettings.timeBetweenService.totalInMin) {
+            timeSlots.add(TimeTile.clone(
+              timeSlots[i],
+              newTime: timeSlots[i].time.add(Duration(
+                  hours: widget.admin.scheduleSettings.timeBetweenService.hour,
+                  minutes: addedMinutes +
+                      widget.admin.scheduleSettings.timeBetweenService.min)),
+              orignalTimeSameAsNewTime: true,
+              copyAppointment: false,
+              timeSlotTaken: false,
+              color: Colors.white,
+              appointment: null,
+            ));
+            addedSlots++;
+          } else {}
+        }
+      }
+    }
+    return addedSlots;
+  }
+
+  bool withAddedTimeIsAtSameMomentAs(
+      DateTime currentSlotTime, DateTime nextSlotTime, int addedMinutes) {
+    return nextSlotTime
+        .isAtSameMomentAs(currentSlotTime.add(Duration(minutes: addedMinutes)));
+  }
+
+  bool withDefaultTimeIsAtSameMomentAs(
+      DateTime currentSlotTime, DateTime nextSlotTime) {
+    return nextSlotTime.isAtSameMomentAs(currentSlotTime.add(Duration(
+        hours: widget.admin.scheduleSettings.timePerService.hour +
+            widget.admin.scheduleSettings.timeBetweenService.hour,
+        minutes: widget.admin.scheduleSettings.timePerService.min +
+            widget.admin.scheduleSettings.timeBetweenService.min)));
   }
 }
