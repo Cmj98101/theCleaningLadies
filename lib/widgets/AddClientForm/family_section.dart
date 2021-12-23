@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:the_cleaning_ladies/models/user_models/client.dart';
 import 'package:the_cleaning_ladies/models/user_models/user.dart';
+import 'package:the_cleaning_ladies/utils/form_validation/form_validation.dart';
 
 class FamilySection extends StatefulWidget {
   final Client client;
@@ -11,36 +12,24 @@ class FamilySection extends StatefulWidget {
 
 class _FamilySectionState extends State<FamilySection> {
   final familyFormKey = GlobalKey<FormState>();
-
+  FormValidation _validation;
   Client client;
   User family = User();
+  bool addFamily = false;
+  bool _addingFamilyMember = false;
 
   @override
   void initState() {
     super.initState();
     client = widget.client;
-  }
-
-  bool addFamily = false;
-  bool _addingFamilyMember = false;
-  bool validateAndSaveFamilyForm() {
-    var form = familyFormKey.currentState;
-    if (form.validate()) {
-      form.save();
-      return true;
-    }
-    return false;
-  }
-
-  submitFamilyForm() {
-    if (validateAndSaveFamilyForm()) {
+    _validation = FormValidation(familyFormKey, onSuccessFullValidation: () {
       setState(() {
         client.family.add(User.family(
             firstName: family.firstName,
             lastName: family.lastName,
             relation: family.relation));
       });
-    }
+    }, unSuccessFullValidation: () {});
   }
 
   @override
@@ -105,7 +94,7 @@ class _FamilySectionState extends State<FamilySection> {
                               child: RaisedButton(
                                 color: Colors.green[300],
                                 child: Text('Add'),
-                                onPressed: () => submitFamilyForm(),
+                                onPressed: () => _validation.submitForm(),
                               )),
                           Container(
                               margin: EdgeInsets.only(left: 15),

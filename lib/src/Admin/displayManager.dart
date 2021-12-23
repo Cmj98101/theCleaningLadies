@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:the_cleaning_ladies/models/easy_db/EasyDb.dart';
-import 'package:the_cleaning_ladies/src/admin/views/homeScreen.dart';
+import 'package:the_cleaning_ladies/src/admin/views/Home/homeScreen.dart';
 import 'package:the_cleaning_ladies/src/admin/views/MyClients/myClients.dart';
-import 'package:the_cleaning_ladies/src/admin/views/quickSchedule.dart';
-import 'package:the_cleaning_ladies/src/admin/views/settings.dart';
-import 'package:the_cleaning_ladies/src/admin/views/summary.dart';
+import 'package:the_cleaning_ladies/src/admin/views/Quickschedule/quickSchedule.dart';
+import 'package:the_cleaning_ladies/src/admin/views//Settings/settings.dart';
+import 'package:the_cleaning_ladies/src/admin/views/Summary/summary.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
-import 'package:the_cleaning_ladies/widgets/bottomNavigation/bottomMenu.dart';
+// import 'package:the_cleaning_ladies/widgets/bottomNavigation/bottomMenu.dart';
+import 'package:the_cleaning_ladies/widgets/bottomNavigation/bottom_menu_v2.dart';
 
 class Screen {
   final String name;
@@ -99,7 +100,7 @@ class _AdminDisplayManagerState extends State<AdminDisplayManager> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNav(
+      bottomNavigationBar: BottomNavV2(
         menuItems,
         admin: widget.admin,
         onChange: (i) => onTabChange(i),

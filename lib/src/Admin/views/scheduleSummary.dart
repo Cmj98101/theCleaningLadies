@@ -161,8 +161,8 @@ class _ScheduleSummaryState extends State<ScheduleSummary> {
                                     print(
                                         'Sending Reminders to : ${appointment.appointmentId}');
 
-                                    widget.admin.sendAutoReminder(appointment,
-                                        (res) {
+                                    widget.admin.phoneHandler
+                                        .sendAutoReminder(appointment, (res) {
                                       if (res == true) {
                                         setState(() {
                                           appointment.isReminderSent = true;
@@ -250,7 +250,8 @@ class _ScheduleSummaryState extends State<ScheduleSummary> {
                                               if (client.templateReminderMsg
                                                   .isEmpty) {
                                                 // TODO: dynamic onCopyMessage editable
-                                                reminderMessage = widget.admin
+                                                reminderMessage = widget
+                                                    .admin.phoneHandler
                                                     .createDynamicMessage(
                                                         widget.admin
                                                             .templateReminderMsg,
@@ -259,7 +260,8 @@ class _ScheduleSummaryState extends State<ScheduleSummary> {
                                                         values: widget.admin
                                                             .templateFillInValues);
                                               } else {
-                                                reminderMessage = widget.admin
+                                                reminderMessage = widget
+                                                    .admin.phoneHandler
                                                     .createDynamicMessage(
                                                         client
                                                             .templateReminderMsg,

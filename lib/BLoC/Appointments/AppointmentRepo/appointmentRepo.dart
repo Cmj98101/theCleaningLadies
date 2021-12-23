@@ -37,7 +37,7 @@ class FireBaseAppointmentsRepository implements AppointmentsRepository {
     NotificationModel notification = NotificationModel(
         title: 'Urgent Reminder!',
         body:
-            'Don\'t forget you have an appointment with ${appointment.client.firstAndLastFormatted} ${appointment.formattedAppointmentDateTime} in ${admin.scheduleSettings.remindBeforeTimeToString}!',
+            'Don\'t forget you have an appointment with ${appointment.client.firstAndLastFormatted} ${appointment.formattedAppointmentDateTime} in ${admin.schedule.scheduleSettings.remindBeforeTimeToString}!',
         id: generateId(),
         payload: 'Payload',
         ref: null,
@@ -115,7 +115,7 @@ class FireBaseAppointmentsRepository implements AppointmentsRepository {
 
   @override
   Future<void> deleteAppointment(Appointment appointment, Admin admin) async {
-    admin
+    admin.phoneHandler
         .setupTwilioFlutter()
         .flow
         .endActiveExecution(appointment.executionSID, isActive: () {});
@@ -147,7 +147,7 @@ class FireBaseAppointmentsRepository implements AppointmentsRepository {
 
   @override
   Future<void> updateAppointment(Appointment appointment, Admin admin) async {
-    await admin
+    await admin.phoneHandler
         .setupTwilioFlutter()
         .flow
         .endActiveExecution(appointment.executionSID, isActive: () async {
@@ -178,8 +178,8 @@ class FireBaseAppointmentsRepository implements AppointmentsRepository {
     if (dbNotification.exists) {
       NotificationModel notification =
           NotificationModel.fromDoc(dbNotification);
-      notification.reminderFor =
-          appointment.from.subtract(admin.scheduleSettings.remindBeforeTime);
+      notification.reminderFor = appointment.from
+          .subtract(admin.schedule.scheduleSettings.remindBeforeTime);
       PushNotifications.updateScheduled(
           admin: admin,
           notification: notification,
@@ -194,7 +194,7 @@ class FireBaseAppointmentsRepository implements AppointmentsRepository {
             notification.isSet = false;
             notification.ref.update({
               'reminderFor': appointment.from
-                  .subtract(admin.scheduleSettings.remindBeforeTime),
+                  .subtract(admin.schedule.scheduleSettings.remindBeforeTime),
               'isSet': notification.isSet
             });
           },
@@ -205,7 +205,7 @@ class FireBaseAppointmentsRepository implements AppointmentsRepository {
 
             notification.ref.update({
               'reminderFor': appointment.from
-                  .subtract(admin.scheduleSettings.remindBeforeTime),
+                  .subtract(admin.schedule.scheduleSettings.remindBeforeTime),
               'isSet': notification.isSet
             });
           });
@@ -213,12 +213,12 @@ class FireBaseAppointmentsRepository implements AppointmentsRepository {
       NotificationModel notification = NotificationModel(
           title: 'Urgent Reminder!',
           body:
-              'Don\'t forget you have an appointment with ${appointment.eventName} in ${admin.scheduleSettings.remindBeforeTimeToString}!',
+              'Don\'t forget you have an appointment with ${appointment.eventName} in ${admin.schedule.scheduleSettings.remindBeforeTimeToString}!',
           id: generateId(),
           payload: 'Payload',
           ref: null,
           reminderFor: appointment.from
-              .subtract(admin.scheduleSettings.remindBeforeTime),
+              .subtract(admin.schedule.scheduleSettings.remindBeforeTime),
           isSet: false);
       _easyDb.createUserData(
           'Users/${admin.id}/Notifications/${appointment.appointmentId}',

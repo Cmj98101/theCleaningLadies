@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:the_cleaning_ladies/models/elapsedTime.dart';
+import 'package:the_cleaning_ladies/models/schedule/scheduleSettings.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/models/size_config.dart';
 
@@ -134,6 +136,8 @@ class _AnimatedInputFieldState extends State<AnimatedInputField> {
 
   @override
   Widget build(BuildContext context) {
+    Admin admin = widget.admin;
+    ScheduleSettings scheduleSettings = admin.schedule.scheduleSettings;
     SizeConfig().init(context);
     return SizeConfig.screenWidth < 600
         ? Card(
@@ -180,7 +184,7 @@ class _AnimatedInputFieldState extends State<AnimatedInputField> {
                                           widget.scheduleSettings
                                                   .servicesPerGroup =
                                               servicesPerGroup;
-                                          widget.admin.updateScheduleSettings();
+                                          scheduleSettings.update(admin.id);
                                         }
                                       : null,
                                 ),
@@ -235,7 +239,7 @@ class _AnimatedInputFieldState extends State<AnimatedInputField> {
                                           widget.scheduleSettings
                                                   .servicesPerGroup =
                                               servicesPerGroup;
-                                          widget.admin.updateScheduleSettings();
+                                          scheduleSettings.update(admin.id);
                                         }
                                       : null,
                                 ),
@@ -333,6 +337,8 @@ class _LapseTimeFieldState extends State<LapseTimeField> {
 
   @override
   Widget build(BuildContext context) {
+    Admin admin = widget.admin;
+    ScheduleSettings scheduleSettings = admin.schedule.scheduleSettings;
     SizeConfig().init(context);
     return SizeConfig.screenWidth < 600
         ? Card(
@@ -430,7 +436,7 @@ class _LapseTimeFieldState extends State<LapseTimeField> {
                                         widget.elapsedTime.min =
                                             elapsedTime.min;
 
-                                        widget.admin.updateScheduleSettings();
+                                        scheduleSettings.update(admin.id);
                                       }
                                     : null,
                               ),
@@ -533,7 +539,7 @@ class _LapseTimeFieldState extends State<LapseTimeField> {
                                         widget.elapsedTime.min =
                                             elapsedTime.min;
 
-                                        widget.admin.updateScheduleSettings();
+                                        scheduleSettings.update(admin.id);
                                       }
                                     : null,
                               ),

@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:the_cleaning_ladies/models/easy_db/EasyDb.dart';
 import 'package:the_cleaning_ladies/models/service/service.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/models/user_models/client.dart';
 
 class Appointment {
+  EasyDB _easyDb = DataBaseRepo();
+
   Appointment.creationFailure() {
     print('No Appointment Created');
   }
@@ -168,6 +171,15 @@ class Appointment {
         await _db.doc('Users/${admin.id}/Appointments/$appointmentId').get();
     Map<String, dynamic> data = appointmentSnap.data();
     isReminderSent = data['isReminderSent'];
+  }
+
+  void update(Appointment appointment, Map<String, dynamic> data,
+      Map<String, dynamic> duplicateData) async {
+    await _easyDb.editDocumentData(
+        'Users/${appointment.client.id}/Cleaning History/${appointment.appointmentId}',
+        duplicateData);
+    return await _easyDb.editDocumentData(
+        "Users/${admin.id}/Appointments/${appointment.appointmentId}", data);
   }
 
   factory Appointment.clone(Appointment appointment,

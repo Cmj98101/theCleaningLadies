@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:the_cleaning_ladies/models/appointment_model/appointment.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:the_cleaning_ladies/models/size_config.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/models/user_models/client.dart';
+import 'package:the_cleaning_ladies/widgets/raisedButtonX.dart';
 
 enum AttributeType { client, appointment }
 
@@ -105,65 +106,76 @@ class _EditReminderTemplateState extends State<EditReminderTemplate> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    Client client = Client.demo();
-    Appointment appointment = Appointment.demo(widget.admin);
-    Map<String, Object> clientAttributes = client.toDocument();
-    Map<String, Object> appointmentAttributes = appointment.toDocument();
-    List<String> clientKeys = [];
-    List<String> appointmentKeys = [];
+    // Client client = Client.demo();
+    // Appointment appointment = Appointment.demo(widget.admin);
+    // Map<String, Object> clientAttributes = client.toDocument();
+    // Map<String, Object> appointmentAttributes = appointment.toDocument();
+    List<String> clientKeys = ['First Name', 'Last Name'];
+    List<String> appointmentKeys = ['Full Date & Time', 'Service Cost'];
 
-    clientAttributes.forEach((key, value) => clientKeys.add(key));
-    appointmentAttributes.forEach((key, value) => appointmentKeys.add(key));
-    appointmentKeys.add('fullDateTime');
+    // clientAttributes.forEach((key, value) => clientKeys.add(key));
+    // appointmentAttributes.forEach((key, value) => appointmentKeys.add(key));
+    // appointmentKeys.add('fullDateTime');
 
-    return LayoutBuilder(builder: (context, constriant) {
-      return Container(
-        // color: Colors.red,
-        margin: EdgeInsets.only(top: 10, left: 20, right: 20),
-        child: ListView(
-          children: [
-            titleWidget(),
-            templateEditorWidget(),
-            confirmTemplateButton(),
-            showMatchesWidget(
-                appointmentKeys: appointmentKeys, clientKeys: clientKeys),
-            widget.isClientSide
-                ? !isTemplateDone || isUpdated
-                    ? Container()
-                    : templateFillInValues.isEmpty
-                        ? Container()
-                        : listValuesNotEmpty()
-                            ? Container(
-                                margin: EdgeInsets.only(top: 20),
-                                child: RaisedButton(
-                                    child: Text('Update'),
-                                    onPressed: () {
-                                      String templateReminderMsg = widget
-                                              .isClientSide
-                                          ? widget.client.templateReminderMsg =
-                                              _reminderMsgTemplateController
-                                                  .text
-                                          : widget.admin.templateReminderMsg =
-                                              _reminderMsgTemplateController
-                                                  .text;
-                                      widget.admin.updateClient(widget.client, {
-                                        'templateReminderMsg':
-                                            templateReminderMsg,
-                                        'templateFillInValues':
-                                            templateFillInValues
-                                      });
-                                      setState(() {
-                                        isUpdated = true;
-                                      });
-                                    }),
-                              )
-                            : Container()
-                : Container(),
-            showUpdateButton(),
-          ],
+    return Stack(
+      children: [
+        Container(
+          child: SvgPicture.asset(
+            'assets/backgroundSVG.svg',
+            // color: Color(0xFFaed2f2),
+            fit: BoxFit.fill,
+          ),
         ),
-      );
-    });
+        Container(
+          // color: Colors.red,
+          margin: EdgeInsets.only(top: 40, left: 37, right: 37),
+          child: ListView(
+            children: [
+              // titleWidget(),
+              templateEditorWidget(),
+              staticReplyOption(),
+              confirmTemplateButton(),
+              showMatchesWidget(
+                  appointmentKeys: appointmentKeys, clientKeys: clientKeys),
+              widget.isClientSide
+                  ? !isTemplateDone || isUpdated
+                      ? Container()
+                      : templateFillInValues.isEmpty
+                          ? Container()
+                          : listValuesNotEmpty()
+                              ? Container(
+                                  margin: EdgeInsets.only(top: 20),
+                                  child: ElevatedButtonX(
+                                      childX: Text('Update'),
+                                      onPressedX: () {
+                                        String templateReminderMsg = widget
+                                                .isClientSide
+                                            ? widget.client
+                                                    .templateReminderMsg =
+                                                _reminderMsgTemplateController
+                                                    .text
+                                            : widget.admin.templateReminderMsg =
+                                                _reminderMsgTemplateController
+                                                    .text;
+                                        widget.client.update({
+                                          'templateReminderMsg':
+                                              templateReminderMsg,
+                                          'templateFillInValues':
+                                              templateFillInValues
+                                        });
+                                        setState(() {
+                                          isUpdated = true;
+                                        });
+                                      }),
+                                )
+                              : Container()
+                  : Container(),
+              showUpdateButton(),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   Widget titleWidget() {
@@ -181,22 +193,46 @@ class _EditReminderTemplateState extends State<EditReminderTemplate> {
 
   Widget templateEditorWidget() {
     return Container(
+        width: 354,
         child: Card(
-      color: Colors.grey[300],
-      elevation: 6,
-      child: TextField(
-        decoration: InputDecoration(contentPadding: EdgeInsets.all(30)),
-        onChanged: (val) {
-          setState(() {
-            isTemplateDone = false;
-          });
-        },
-        controller: _reminderMsgTemplateController,
-        style:
-            TextStyle(fontSize: SizeConfig.safeBlockHorizontal * contentSize),
-        maxLines: 10,
-      ),
-    ));
+          elevation: 10,
+          shadowColor: Colors.black,
+          child: TextField(
+            cursorColor: Colors.black,
+            decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(20), border: InputBorder.none),
+            onChanged: (val) {
+              setState(() {
+                isTemplateDone = false;
+              });
+            },
+            controller: _reminderMsgTemplateController,
+            style: TextStyle(
+                fontSize: SizeConfig.safeBlockHorizontal * contentSize),
+            maxLines: 10,
+          ),
+        ));
+  }
+
+  Widget staticReplyOption() {
+    TextEditingController staticField =
+        TextEditingController(text: widget.admin.phoneHandler.optionsMSG);
+    return Container(
+        margin: EdgeInsets.only(top: 12),
+        width: 354,
+        child: Card(
+          elevation: 10,
+          shadowColor: Colors.black,
+          child: TextField(
+            controller: staticField,
+            readOnly: true,
+            decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(20), border: InputBorder.none),
+            style: TextStyle(
+                fontSize: SizeConfig.safeBlockHorizontal * contentSize),
+            maxLines: 2,
+          ),
+        ));
   }
 
   Widget confirmTemplateButton() {
@@ -236,9 +272,9 @@ class _EditReminderTemplateState extends State<EditReminderTemplate> {
           Container(
             margin: EdgeInsets.only(top: 10),
             width: SizeConfig.safeBlockHorizontal * 60,
-            child: RaisedButton(
-                color: Colors.green[400],
-                child: Padding(
+            child: ElevatedButtonX(
+                colorX: Colors.green[400],
+                childX: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text(
                     'Confirm Template',
@@ -247,7 +283,7 @@ class _EditReminderTemplateState extends State<EditReminderTemplate> {
                     ),
                   ),
                 ),
-                onPressed: () {
+                onPressedX: () {
                   confirmTemplate();
                 }),
           ),
@@ -335,24 +371,28 @@ class _EditReminderTemplateState extends State<EditReminderTemplate> {
                               SizeConfig.safeBlockHorizontal * contentSize))),
               Container(
                   // width: 100,
-                  child: RaisedButton(
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                      templateFillInValues[i] == ''
-                          ? 'Select an Attribute'
-                          : templateFillInValues[i],
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: SizeConfig.safeBlockHorizontal * btnSize)),
-                ),
-                onPressed: () {
-                  setState(() {
-                    isAttributeSelected = true;
-                    matchIndex = i;
-                  });
-                },
-              )),
+                  width: SizeConfig.safeBlockHorizontal * 50,
+                  child: ElevatedButtonX(
+                    colorX: Color(0xFFF28921),
+                    childX: Container(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                          templateFillInValues[i] == ''
+                              ? 'Select an Attribute'
+                              : templateFillInValues[i],
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize:
+                                  SizeConfig.safeBlockHorizontal * btnSize,
+                              color: Colors.white)),
+                    ),
+                    onPressedX: () {
+                      setState(() {
+                        isAttributeSelected = true;
+                        matchIndex = i;
+                      });
+                    },
+                  )),
             ],
           ),
         ),
@@ -423,17 +463,17 @@ class _EditReminderTemplateState extends State<EditReminderTemplate> {
         .map((key) => Container(
               width: SizeConfig.safeBlockHorizontal * 65,
               margin: EdgeInsets.all(3),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
+              child: ElevatedButtonX(
+                shapeX: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(60.0)),
-                onPressed: () {
+                onPressedX: () {
                   setState(() {
                     isAttributeSelected = false;
                     templateFillInValues[matchIndex] = key;
                     isUpdated = listValuesNotEmpty() ? false : true;
                   });
                 },
-                child: Text(key,
+                childX: Text(key,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: SizeConfig.safeBlockHorizontal * 3)),
@@ -471,7 +511,7 @@ class _EditReminderTemplateState extends State<EditReminderTemplate> {
             //     _reminderMsgTemplateController.text;
             templateFillInValues =
                 widget.isClientSide ? [] : widget.admin.templateFillInValues;
-            widget.admin.updateClient(widget.client, {
+            widget.client.update({
               'templateReminderMsg': '',
               'templateFillInValues': [],
             });
@@ -483,22 +523,28 @@ class _EditReminderTemplateState extends State<EditReminderTemplate> {
     return Container(
       height: SizeConfig.safeBlockVertical * 7,
       margin: EdgeInsets.only(bottom: 40, top: 20),
-      child: RaisedButton(
-          color: Colors.green[400],
+      child: ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Color(0xFFF28921))),
           child: Text(
             'Update Default Template',
-            style:
-                TextStyle(fontSize: SizeConfig.safeBlockHorizontal * btnSize),
+            style: TextStyle(
+                fontSize: SizeConfig.safeBlockHorizontal * btnSize,
+                color: Colors.white),
           ),
           onPressed: () {
             setState(() {
-              widget.admin.templateReminderMsg =
-                  _reminderMsgTemplateController.text;
               widget.admin.templateFillInValues = templateFillInValues;
             });
             String templateReminderMsg = _reminderMsgTemplateController.text;
+
+            String fullTemplateReminderMsg = '''
+$templateReminderMsg
+''';
+            widget.admin.templateReminderMsg = fullTemplateReminderMsg;
             widget.admin.update({
-              'templateReminderMsg': templateReminderMsg,
+              'templateReminderMsg': fullTemplateReminderMsg,
               'templateFillInValues': templateFillInValues
             });
           }),

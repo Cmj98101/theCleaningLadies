@@ -1,105 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:the_cleaning_ladies/models/time_tile/time_title.dart';
+import 'package:the_cleaning_ladies/models/broadcastHandler/broadcastHandler.dart';
+import 'package:the_cleaning_ladies/models/financeSummary/financeSummary.dart';
+import 'package:the_cleaning_ladies/models/phoneHandler/phoneHandler.dart';
+import 'package:the_cleaning_ladies/models/schedule/schedule.dart';
+import 'package:the_cleaning_ladies/models/schedule/scheduleSettings.dart';
 import 'package:the_cleaning_ladies/models/user_models/client.dart';
 import 'package:the_cleaning_ladies/models/easy_db/EasyDb.dart';
 import 'package:the_cleaning_ladies/models/user_models/workers.dart';
-import 'package:the_cleaning_ladies/models/SMS/message.dart';
 import 'package:the_cleaning_ladies/models/user_models/user.dart';
 import 'package:the_cleaning_ladies/models/history_event.dart';
 import 'package:the_cleaning_ladies/models/appointment_model/appointment.dart';
 import 'package:the_cleaning_ladies/notification_model/notification_model.dart';
-import 'package:twilioFlutter/models/sms.dart';
-import 'package:twilioFlutter/twilioFlutter.dart';
+
 import 'package:the_cleaning_ladies/models/service/service.dart' as service;
-
-class ElapsedTime {
-  int days;
-  int hour;
-  int min;
-  ElapsedTime({this.days, @required this.hour, @required this.min});
-  int get totalInMin => ((hour * 60) + min);
-
-  Map<String, Object> toDocument() {
-    return {'days': days ?? 0, 'hour': hour ?? 0, 'min': min ?? 0};
-  }
-}
-
-class ScheduleSettings {
-  ElapsedTime timePerService;
-  ElapsedTime timeBetweenService;
-  ElapsedTime leadTime;
-  ElapsedTime reminderNotificationTime;
-  Duration get remindBeforeTime => Duration(
-      days: reminderNotificationTime.days,
-      hours: reminderNotificationTime.hour,
-      minutes: reminderNotificationTime.min);
-  String get reminderInDays =>
-      '${reminderNotificationTime.days == 0 ? '' : reminderNotificationTime.days == 1 ? '${reminderNotificationTime.days} day' : '${reminderNotificationTime.days} days'}';
-  String get reminderInHour =>
-      '${reminderNotificationTime.hour == 0 ? '' : reminderNotificationTime.hour == 1 ? '${reminderNotificationTime.hour} hr.' : '${reminderNotificationTime.hour} hrs.'}';
-
-  String get reminderInMin =>
-      '${reminderNotificationTime.min == 0 ? '' : reminderNotificationTime.min == 1 ? '${reminderNotificationTime.min} min.' : '${reminderNotificationTime.min} minutes'}';
-
-  String get remindBeforeTimeToString {
-    return '$reminderInDays $reminderInHour $reminderInMin';
-  }
-
-  int servicesPerGroup;
-  ScheduleSettings(
-      {@required this.timePerService,
-      @required this.timeBetweenService,
-      @required this.servicesPerGroup,
-      @required this.reminderNotificationTime,
-      @required this.leadTime});
-
-  Map<String, Object> toDocument() {
-    return {
-      'servicesPerGroup': servicesPerGroup,
-      'timeBetweenService': timeBetweenService.toDocument(),
-      'timePerService': timePerService.toDocument(),
-      'leadTime': leadTime.toDocument(),
-      'remindBeforeTime': reminderNotificationTime.toDocument()
-    };
-  }
-
-  factory ScheduleSettings.fromDocument(DocumentSnapshot document) {
-    Map<String, dynamic> doc = document.data();
-
-    return ScheduleSettings(
-        servicesPerGroup: doc['scheduleSettings']['servicesPerGroup'],
-        timeBetweenService: ElapsedTime(
-            days: (doc['scheduleSettings']['timeBetweenService']['days']) ?? 0,
-            hour: (doc['scheduleSettings']['timeBetweenService']['hour']) ?? 0,
-            min: (doc['scheduleSettings']['timeBetweenService']['min']) ?? 0),
-        timePerService: ElapsedTime(
-            days: (doc['scheduleSettings']['timePerService']['days']) ?? 0,
-            hour: (doc['scheduleSettings']['timePerService']['hour']) ?? 0,
-            min: (doc['scheduleSettings']['timePerService']['min']) ?? 0),
-        reminderNotificationTime: ElapsedTime(
-            days: (doc['scheduleSettings']['remindBeforeTime']['days']) ?? 0,
-            hour: (doc['scheduleSettings']['remindBeforeTime']['hour']) ?? 0,
-            min: (doc['scheduleSettings']['remindBeforeTime']['min']) ?? 0),
-        leadTime: ElapsedTime(
-            days: (doc['scheduleSettings']['leadTime']['days']) ?? 0,
-            hour: (doc['scheduleSettings']['leadTime']['hour']) ?? 0,
-            min: (doc['scheduleSettings']['leadTime']['min']) ?? 0));
-  }
-}
 
 class Admin extends User {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  String testSID = 'AC1ac1530f724c58596d7bb13e9d8b6f1a';
-  String testAuth = 'c0017e86bd2259221fb3a479445c9019';
 
-  String liveSID = 'AC96526016b76c4b23da1433373f5207e0';
-  String liveAuth = '2537da78be327dd38acad822dfc97949';
   EasyDB _easyDb = DataBaseRepo();
-  String twilioNumber;
   int notificationCount;
   String businessCode;
   service.Service services;
+  String twilioNumber;
+
+  Schedule schedule;
+  ScheduleSettings scheduleSettings;
+  FinanceSummary financeSummary;
+  BroadcastHandler broadcastHandler;
+  PhoneHandler phoneHandler;
+
   Admin({
     String businessName,
     String firstName,
@@ -135,10 +65,13 @@ class Admin extends User {
           userType: userType,
           ref: ref,
         ) {
+    phoneHandler = PhoneHandler.init(admin: this);
+    schedule = Schedule.init(admin: this, scheduleSettings: scheduleSettings);
+
     services = service.Service.init(admin: this);
+    financeSummary = FinanceSummary.init(admin: this);
   }
 
-  ScheduleSettings scheduleSettings;
   // A List that shows Groups and inside of Groups it shows how many workers
   List<Group> groups = [
     Group(<Worker>[
@@ -164,102 +97,6 @@ class Admin extends User {
   String templateReminderMsg;
   List<dynamic> templateFillInValues = [];
   List<Client> customers = [];
-  TwilioFlutter _twilioFlutter;
-  void updateScheduleSettings() {
-    _db
-        .doc('Users/$id')
-        .update({'scheduleSettings': scheduleSettings.toDocument()});
-  }
-
-  void addPaymentType() async {
-    List<Client> clients = await getAllCustomersFromDB();
-    for (Client client in clients) {
-      client.reference.update({'paymentType': PaymentType.unknown.toString()});
-    }
-  }
-
-  void addaddPropertyToCustomer() async {
-    List<Client> clients = await _getAllClients(activeOnly: false);
-    clients.forEach((client) {
-      client.reference.update({'notificationCount': 0});
-    });
-  }
-
-  // void changeTypes() async {
-  //   List<Client> clients = await _getAllClients(activeOnly: false);
-  //   List<Appointment> _appointment = await _getAppointments();
-  //   print('hello');
-  //   _appointment.forEach((appointment) {
-  //     print(appointment.eventName);
-  //     print('helo');
-  //     _db.doc('Users/$id/Appointments/${appointment.appointmentId}');
-  //   });
-  // }
-  // void fixCleaningHistory() async {
-  //   List<Appointment> appointments = await _getAppointments();
-  //   appointments.forEach((appointment) {
-  //     _db
-  //         .doc(
-  //             '${appointment.clientReference}/Cleaning History/${appointment.appointmentId}')
-  //         .update({'from': appointment.from}).catchError((onError) {
-  //       print(appointment.clientReference);
-
-  //       print(onError);
-  //     });
-  //   });
-  // }
-
-  List<TimeTile> generateAvailabilities(DateTime selectedDate,
-      DateTime timeToStart, List<Appointment> reservedTimes) {
-    assert(selectedDate != null);
-    assert(timeToStart != null);
-    assert(reservedTimes != null);
-
-    List<TimeTile> _availableTimes = [];
-    for (var i = 0; i < scheduleSettings.servicesPerGroup; i++) {
-      i == 0
-          ? _availableTimes.add(TimeTile(
-              selectedDate
-                  .add(Duration(
-                      hours: timeToStart.hour, minutes: timeToStart.minute))
-                  .add(Duration(
-                    minutes: ((scheduleSettings.timePerService.totalInMin * i)),
-                  )),
-              this,
-              orignalTime: selectedDate
-                  .add(Duration(
-                      hours: timeToStart.hour, minutes: timeToStart.minute))
-                  .add(Duration(
-                    minutes: (scheduleSettings.timePerService.totalInMin +
-                            scheduleSettings.timeBetweenService.totalInMin) *
-                        i,
-                  )),
-              timeSlotTaken: false,
-              undoAvailable: false))
-          : _availableTimes.add(TimeTile(
-              selectedDate
-                  .add(Duration(
-                      hours: timeToStart.hour, minutes: timeToStart.minute))
-                  .add(Duration(
-                    minutes: (scheduleSettings.timePerService.totalInMin +
-                            scheduleSettings.timeBetweenService.totalInMin) *
-                        i,
-                  )),
-              this,
-              orignalTime: selectedDate
-                  .add(Duration(
-                      hours: timeToStart.hour, minutes: timeToStart.minute))
-                  .add(Duration(
-                    minutes: (scheduleSettings.timePerService.totalInMin +
-                            scheduleSettings.timeBetweenService.totalInMin) *
-                        i,
-                  )),
-              timeSlotTaken: false,
-              undoAvailable: false));
-    }
-    _availableTimes = removeReservedTimes(_availableTimes, reservedTimes);
-    return _availableTimes;
-  }
 
   Future<List<NotificationModel>> fetchAwaitingNotifications(
       {bool isSet = false}) async {
@@ -272,24 +109,6 @@ class Admin extends User {
     return snap.docs.map((doc) => NotificationModel.fromDoc(doc)).toList();
   }
 
-  List<TimeTile> removeReservedTimes(
-      List<TimeTile> availableTimes, List<Appointment> reservedTimes) {
-    availableTimes.forEach((timeTile) {
-      for (int i = 0; i < reservedTimes.length; i++) {
-        if (timeTile.time == reservedTimes[i].from) {
-          timeTile.timeSlotTaken = true;
-          timeTile.appointment = reservedTimes[i];
-          timeTile.color = Colors.green;
-          reservedTimes.removeAt(i);
-          break;
-        } else {
-          timeTile.timeSlotTaken = false;
-        }
-      }
-    });
-    return availableTimes;
-  }
-
   Future<Client> getClient(String reference) async {
     DocumentSnapshot snap = await _db.doc(reference).get();
 
@@ -297,13 +116,13 @@ class Admin extends User {
   }
 
   Future<List<Appointment>> getFutureAppointments() async {
-    List<Client> _clients = await _getAllClients();
+    List<Client> _clients = await getAllClients();
     List<Appointment> appointments = [];
     _clients.forEach((client) {
       appointments.add(Appointment(
           client.firstAndLastFormatted,
-          client.calculateTimeForCleaningAndSchedule().from,
-          client.calculateTimeForCleaningAndSchedule().to,
+          client.calculateTimeForCleaningAndSchedule(this).from,
+          client.calculateTimeForCleaningAndSchedule(this).to,
           Colors.blue[400],
           false,
           client,
@@ -354,17 +173,7 @@ class Admin extends User {
   void update(Map<String, dynamic> data) async =>
       await _easyDb.editDocumentData('Users/$id', data);
 
-  void updateClient(Client client, Map<String, dynamic> data) async =>
-      await _easyDb.editDocumentData('Users/${client.id}', data);
-
-  // void addHistoryToEachCustomer() async {
-  //   List<Client> _clients = await _getAllClients();
-  //   _clients.forEach((client) async {
-  //     _db.doc('Users/${client.id}').update({'templateReminderMsg': ''});
-  //   });
-  // }
-
-  Future<List<Client>> _getAllClients({bool activeOnly = true}) async {
+  Future<List<Client>> getAllClients({bool activeOnly = true}) async {
     if (activeOnly) {
       QuerySnapshot _customers = await _db
           .collection('Users')
@@ -387,19 +196,8 @@ class Admin extends User {
     }
   }
 
-  Future<double> getWeekTotalMinusWorkerFees() async {
-    List<Appointment> _appointments = await _getAppointments();
-
-    _appointments.removeWhere((appointment) => appointment.checkInTheWeek(
-        DateTime(2020, 10, 5), DateTime(2020, 10, 11)));
-    double total = 0;
-    print(_appointments.length);
-    _appointments.forEach((appointment) => total += appointment.serviceCost);
-    return total;
-  }
-
   void changeAllAppointments() async {
-    List<Appointment> _appointments = await _getAppointments();
+    List<Appointment> _appointments = await getAppointments();
     _appointments.forEach((appointment) async {
       Client client = await getClient('Users/${appointment.client.id}');
       appointment.ref
@@ -407,7 +205,7 @@ class Admin extends User {
     });
   }
 
-  Future<List<Appointment>> _getAppointments(
+  Future<List<Appointment>> getAppointments(
       {bool confirmedOnly = false, bool unconfirmedOnly = false}) async {
     if (!confirmedOnly && !unconfirmedOnly) {
       return await _db.collection('Users/$id/Appointments').get().then((snap) =>
@@ -429,90 +227,8 @@ class Admin extends User {
             .toList());
   }
 
-  Future<double> getDayTotal(int day, DateTime start) async {
-    List<Appointment> _appointments = await _getAppointments();
-    _appointments.removeWhere((appointment) => !appointment.fromDateOnly
-        .isAtSameMomentAs(start.add(Duration(days: day))));
-    // print(_appointments.length);
-    double total = 0;
-    _appointments.forEach((appointment) {
-      if (appointment.services.isNotEmpty) {
-        appointment.services.forEach((service) {
-          if (service.selected) {
-            total += service.cost;
-          }
-        });
-      }
-      total += appointment.serviceCost;
-    });
-    // print(total);
-    return total;
-  }
-
-  Future<double> getWeekTotal(DateTime start) async {
-    List<Appointment> _appointments = await _getAppointments();
-    _appointments.removeWhere((appointment) =>
-        appointment.checkInTheWeek(start, start.add(Duration(days: 6))));
-    double total = 0;
-    _appointments.forEach((appointment) {
-      if (appointment.services.isNotEmpty) {
-        appointment.services.forEach((service) {
-          if (service.selected) {
-            total += service.cost;
-          }
-        });
-      }
-      total += appointment.serviceCost;
-    });
-    return total;
-  }
-
-  Future<int> get getTotalClients async {
-    List<Client> _customers = await _getAllClients();
-    return _customers.length;
-  }
-
-  Future<double> getTotalMonthlyProfit(int month) async {
-    double total = 0;
-    List<Appointment> _appointments =
-        await _getAppointments(confirmedOnly: true);
-    _appointments.forEach((appointment) {
-      if (appointment.from.month == month) {
-        if (appointment.services.isNotEmpty) {
-          appointment.services.forEach((service) {
-            if (service.selected) {
-              total += service.cost;
-            }
-          });
-        }
-        total += appointment.serviceCost;
-      }
-    });
-    return total;
-  }
-
-  Future<double> get getTotalClientsMonthlyPay async {
-    double total = 0;
-    List<Client> _customers = await _getAllClients(activeOnly: true);
-    _customers.forEach((client) {
-      switch (client.serviceFrequency) {
-        case ServiceFrequency.weekly:
-          total += client.costPerCleaning * 4;
-
-          break;
-        case ServiceFrequency.biWeekly:
-          total += client.costPerCleaning * 2;
-
-          break;
-        default:
-          total += client.costPerCleaning;
-      }
-    });
-    return total;
-  }
-
   void updateClientHistory() async {
-    List<Client> clients = await _getAllClients();
+    List<Client> clients = await getAllClients();
     for (Client client in clients) {
       QuerySnapshot snap =
           await _db.collection('Users/${client.id}/Cleaning History').get();
@@ -524,107 +240,6 @@ class Admin extends User {
         }
       });
     }
-  }
-
-  void updateContactNumber() async {
-    List<Client> clients = await _getAllClients();
-    clients.forEach((client) async {
-      await _db
-          .doc('Users/${client.id}')
-          .update({'contactNumber': client.formatPhoneNumber});
-    });
-    print('done');
-  }
-
-  // Future<void> moveAppointments() async {
-  //   List<Appointment> appointments = await _getAppointments();
-  //   appointments.forEach((appointment) {
-  //     _easyDb.createUserData(
-  //         'Users/$id/Appointments/${appointment.appointmentId}',
-  //         appointment.toDocument(),
-  //         createAutoId: false,
-  //         addAutoIDToDoc: false);
-  //   });
-  // }
-
-  void updateAppointment(Appointment appointment, Map<String, dynamic> data,
-      Map<String, dynamic> duplicateData) async {
-    await _easyDb.editDocumentData(
-        'Users/${appointment.client.id}/Cleaning History/${appointment.appointmentId}',
-        duplicateData);
-    return await _easyDb.editDocumentData(
-        "Users/$id/Appointments/${appointment.appointmentId}", data);
-  }
-
-  TwilioFlutter setupTwilioFlutter() => _twilioFlutter = TwilioFlutter(
-        accountSid: liveSID,
-        authToken: liveAuth,
-        twilioNumber: twilioNumber,
-      );
-
-  Future<List<PhoneNumber>> searchAvailbleNumbers(Function(bool) isLoading,
-      {String areaCode = '',
-      int pageSize = 20,
-      bool smsEnabled = true,
-      bool voiceEnabled = true}) async {
-    setupTwilioFlutter();
-    return await _twilioFlutter.getAvailablePhoneNumbers(isLoading,
-        areaCode: areaCode,
-        pageSize: pageSize,
-        smsEnabled: smsEnabled,
-        voiceEnabled: voiceEnabled);
-  }
-
-  Future<List<PhoneNumber>> getActivePhoneNumbers(
-    Function(bool) isLoading,
-  ) async {
-    setupTwilioFlutter();
-    return await _twilioFlutter.getActivePhoneNumbers(
-      isLoading,
-    );
-  }
-
-  Future<void> provisionPhoneNumber(Function(bool) isLoading,
-      {String phoneNumber, @required Function() onDone}) async {
-    setupTwilioFlutter();
-    return await _twilioFlutter.provisionPhoneNumber(
-      isLoading,
-      phoneNumber: phoneNumber,
-      onDone: () => onDone(),
-    );
-  }
-
-  void reply(String body, String to, Client client) async {
-    setupTwilioFlutter();
-    await _twilioFlutter
-        .sendSMS(toNumber: to, messageBody: body)
-        .whenComplete(() {
-      _db.collection('Users/${client.id}/SMS').add({
-        'to': to,
-        'from': twilioNumber,
-        'body': body,
-        'adminUserId': id,
-        'createdAt': DateTime.now()
-      });
-      print('Message sent');
-    });
-  }
-
-  void replyMedia(
-      String body, String to, Client client, String mediaUrl) async {
-    setupTwilioFlutter();
-    await _twilioFlutter
-        .sendMediaSMS(toNumber: to, messageBody: body, mediaUrl: mediaUrl)
-        .whenComplete(() {
-      _db.collection('Users/${client.id}/SMS').add({
-        'to': to,
-        'from': twilioNumber,
-        'body': body,
-        'mediaUrl': mediaUrl,
-        'createdAt': DateTime.now()
-      });
-      print('Message sent');
-    });
   }
 
 //   void sendCleaningReminder() async {
@@ -661,135 +276,6 @@ class Admin extends User {
     return matches;
   }
 
-  String createDynamicMessage(
-      String message, Appointment appointment, Client client,
-      {List<dynamic> values}) {
-    int index = 1;
-    Map<String, dynamic> fillInValues = {
-      'firstName': client.firstName,
-      'lastName': client.lastName,
-      'cleaningCost': appointment.serviceCost.toString(),
-      'fullDateTime': appointment.getMsgReadyFullDateTime,
-    };
-    return message.replaceAllMapped(
-        RegExp(r'(\{\d{1}\})', multiLine: true, caseSensitive: false), (m) {
-      // Add all values not found in Map to a list and list those
-      // values in a User Friendly way
-      String value = fillInValues[values[index - 1]] ??
-          '{${values[index - 1]} value is unknown}';
-      index++;
-      return value;
-    });
-  }
-
-  void sendAutoReminder(
-      Appointment appointment, Function(bool) requestResponse) async {
-    setupTwilioFlutter();
-    DocumentSnapshot clientSnap =
-        await _db.doc(appointment.clientReference).get();
-    Client client = Client.fromDocumentSnap(clientSnap);
-    String msg;
-    if (client.templateReminderMsg.isEmpty) {
-      msg = createDynamicMessage(templateReminderMsg, appointment, client,
-          values: templateFillInValues);
-      print(createDynamicMessage(templateReminderMsg, appointment, client,
-          values: templateFillInValues));
-    } else {
-      msg = createDynamicMessage(
-          client.templateReminderMsg, appointment, client,
-          values: client.templateFillInValues);
-      print(createDynamicMessage(
-          client.templateReminderMsg, appointment, client,
-          values: client.templateFillInValues));
-    }
-    Future.delayed(Duration(seconds: 1), () async {
-      await _twilioFlutter.flow.sendAutoReminderRequest(
-          (res, statusCode, data) => requestResponse(res),
-          toNumber: client.formatPhoneNumber,
-          id: appointment.appointmentId,
-          clientId: appointment.client.id,
-          adminUserId: id,
-          firstName: client.firstName,
-          message: """$msg""",
-          flowSID: 'FWa0015a82a19e38f4b8348943762f0ba4');
-    }).whenComplete(() {
-      // _db.collection('Users/${client.id}/SMS').add({
-      //   'to': client.formatPhoneNumber,
-      //   'from': twilioNumber,
-      //   'body': """$msg""",
-      //   'createdAt': DateTime.now()
-      // });
-    });
-  }
-
-  void sendBroadcastMessageWithMedia(String mediaUrl) async {
-    List<Client> clients = await _getAllClients(activeOnly: true);
-    clients.forEach((client) {
-      String msg = """
-Dear ${client.firstName},
-
-There is no better time than the holidays to reminisce on the past year. It has been a tough transition since my mom passed away, but I thank you ${client.firstName} for your patience and for supporting my business "The Cleaning Ladies". May you have a merry holiday and a prosperous New Year.
-""";
-      // print(
-      //     '(${client.firstName}, ${client?.lastName ?? ''} active: ${client.active}) sending...');
-      // if (client.contactNumber == '+19092223241') {
-      sendSMSForBroadcast(client, mediaUrl, msg);
-      // }
-    });
-  }
-
-  void sendSMSForBroadcast(Client client, String mediaUrl, String messageBody) {
-    setupTwilioFlutter();
-
-    Future.delayed(Duration(seconds: 2), () async {
-      await _twilioFlutter.sendMediaSMS(
-          toNumber: client.formatPhoneNumber,
-          messageBody: """$messageBody""",
-          mediaUrl: mediaUrl);
-    }).whenComplete(() {
-      _db.collection('Users/${client.id}/SMS').add({
-        'to': client.formatPhoneNumber,
-        'from': twilioNumber,
-        'mediaUrl': mediaUrl,
-        'body': """$messageBody""",
-        'createdAt': DateTime.now()
-      });
-    });
-  }
-
-  Future<List<SMS>> getSmSList() async {
-    setupTwilioFlutter();
-    return await _twilioFlutter.getSmsList();
-  }
-
-  Stream<List<Message>> getSMS(Client client) {
-    return _db
-        .collection('Users/${client.id}/SMS')
-        .orderBy('createdAt', descending: true)
-        .snapshots()
-        .map((snap) {
-      return snap.docs.map((doc) => Message.fromDocument(doc)).toList();
-    });
-  }
-
-  Future<List<SMS>> getSpecificSmSList(String from, String to) async {
-    setupTwilioFlutter();
-    return await _twilioFlutter.getSpecificSmsList(from, to);
-  }
-
-  void createAppointment(Appointment appointment) async {
-    Client _client = appointment.client;
-    print('creating appointment for Customer ID: ${_client.id}');
-    return await _easyDb.createUserData(
-        'Users/$id/Appointments', appointment.toDocument(),
-        duplicateDoc: true,
-        duplicatedCollectionPath: ['Users/${_client.id}/Cleaning History'],
-        duplicatedData: [
-          HistoryEvent.fromAppointment(appointment).toDocument()
-        ],
-        onCreation: (docId) {});
-  }
-
   void createSchedule() async {
     print('creating schedule');
     _tryScheduling(await getAllCustomersFromDB());
@@ -808,7 +294,8 @@ There is no better time than the holidays to reminisce on the past year. It has 
   void _tryScheduling(List<Client> customers) {
     for (Client customer in customers) {
       // Map<String, DateTime> nextCleaning = customer.calculateNextCleaning();
-      Appointment appointment = customer.calculateTimeForCleaningAndSchedule();
+      Appointment appointment =
+          customer.calculateTimeForCleaningAndSchedule(this);
       print(
           '${appointment.client.firstAndLastFormatted}  ${appointment.formattedAppointmentDateTime}');
       // _easyDb.createUserData('Users/$id/Appointments', appointment.toDocument());
@@ -825,17 +312,31 @@ There is no better time than the holidays to reminisce on the past year. It has 
         businessName: doc['businessName'],
         firstName: doc['firstName'],
         lastName: doc['lastName'],
+        state: doc['state'],
+        city: doc['city'],
         userType: userTypes['${doc['userType']}'],
         id: document.id,
         ref: document.reference,
         templateReminderMsg: doc['templateReminderMsg'],
         templateFillInValues: doc['templateFillInValues'],
-        scheduleSettings: ScheduleSettings.fromDocument(document),
+        scheduleSettings: ScheduleSettings.fromDoc(document),
         twilioNumber: doc['apiPN'],
         notificationCount: doc['notificationCount'],
         businessCode: doc['businessCode']);
   }
   Map<String, Object> toDocument() {
+    String templateReminderMsg = """
+Hello from $businessName (Automated Reminder System)!
+
+{1},
+    
+This is just your reminder text that you have an appointment with $businessName.
+
+Scheduled Date:
+{2}
+    
+Please reply "1" to confirm and "2" to reschedule.
+""";
     return {
       'businessName': businessName,
       'firstName': firstName,
@@ -846,19 +347,9 @@ There is no better time than the holidays to reminisce on the past year. It has 
       'zipCode': zipCode,
       'contactNumber': contactNumber,
       'userType': UserType.admin.toString(),
-      'templateReminderMsg': '',
-      'templateFillInValues': [],
-      'scheduleSettings': ScheduleSettings(
-              servicesPerGroup: 4,
-              timeBetweenService: ElapsedTime(days: 0, hour: 00, min: 20),
-              timePerService: ElapsedTime(days: 0, hour: 2, min: 00),
-              leadTime: ElapsedTime(
-                days: 0,
-                hour: 0,
-                min: 45,
-              ),
-              reminderNotificationTime: ElapsedTime(days: 0, hour: 2, min: 0))
-          .toDocument(),
+      'templateReminderMsg': templateReminderMsg,
+      'templateFillInValues': ['firstName', 'fullDateTime'],
+      'scheduleSettings': ScheduleSettings.standard().toDocument(),
       'apiPN': '',
       'notificationCount': 0,
       'businessCode': businessCode,

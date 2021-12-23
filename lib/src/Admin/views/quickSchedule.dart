@@ -380,7 +380,7 @@ class _BuildAvailibilityViewState extends State<BuildAvailibilityView> {
                       .removeWhere((appointment) => checkDateSame(appointment));
                   availableTimes = List<TimeTile>(
                       widget.admin.scheduleSettings.servicesPerGroup);
-                  availableTimes = widget.admin.generateAvailabilities(
+                  availableTimes = widget.admin.schedule.generateAvailabilities(
                       widget.selectedDate, widget.timeToStart, reservedTimes);
 
                   if (reservedTimes.length != 0) {

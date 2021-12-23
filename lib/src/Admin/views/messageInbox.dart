@@ -82,7 +82,7 @@ class _MessageInboxScreenState extends State<MessageInboxScreen> {
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.safeBlockVertical * 90,
                       child: StreamBuilder(
-                        stream: widget.admin.getSMS(widget.client),
+                        stream: widget.admin.phoneHandler.getSMS(widget.client),
                         builder: (BuildContext context,
                             AsyncSnapshot<List<Message>> snap) {
                           switch (snap.connectionState) {
@@ -239,7 +239,7 @@ class _MessageInboxScreenState extends State<MessageInboxScreen> {
   void handleSubmit(String message) {
     composeMessageTextController.text = "";
     print(message);
-    widget.admin.reply(
+    widget.admin.phoneHandler.reply(
       message,
       widget.client.formatPhoneNumber,
       widget.client,

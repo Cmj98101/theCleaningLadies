@@ -33,11 +33,11 @@ class _SummaryScreenState extends State<SummaryScreen> {
   }
 
   Future<int> _getTotalClients() async {
-    return await widget.admin.getTotalClients;
+    return await widget.admin.financeSummary.getTotalClients;
   }
 
   Future<double> _getTotalClientsValue() async {
-    return await widget.admin.getTotalClientsMonthlyPay;
+    return await widget.admin.financeSummary.getTotalClientsMonthlyPay;
   }
 
   @override
@@ -164,16 +164,16 @@ class _WeeklySummaryState extends State<WeeklySummary> {
   Future<List<double>> _getDayTotal() async {
     List<double> totals = [];
     for (var i = 0; i < days.length; i++) {
-      totals.add(await widget.admin.getDayTotal(i, start));
+      totals.add(await widget.admin.financeSummary.getDayTotal(i, start));
     }
 
     return totals;
   }
 
   Future<double> _getWeekTotal() async =>
-      await widget.admin.getWeekTotal(start);
+      await widget.admin.financeSummary.getWeekTotal(start);
   Future<double> _getMonthlyTotal() async =>
-      await widget.admin.getTotalMonthlyProfit(start.month);
+      await widget.admin.financeSummary.getTotalMonthlyProfit(start.month);
 
   void changeDate({bool subtract = false}) {
     subtract

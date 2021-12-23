@@ -55,7 +55,7 @@ class _AppointmentOnTapDetailsScreenState
                           child: Text('Confirm Appointment'),
                           onPressed: () async {
                             print('Confirming ${appointment.appointmentId}');
-                            widget.admin.updateAppointment(appointment, {
+                            widget.appointment.update(appointment, {
                               "isConfirmed": true,
                               "isRescheduling": false,
                               "noReply": false
@@ -118,8 +118,8 @@ class _AppointmentOnTapDetailsScreenState
                             if (appointment.isReminderSent == false) {
                               print(
                                   'Sending Reminders to : ${appointment.appointmentId}');
-
-                              widget.admin.sendAutoReminder(appointment, (res) {
+                              widget.admin.phoneHandler
+                                  .sendAutoReminder(appointment, (res) {
                                 if (res == true) {
                                   setState(() {
                                     appointment.isReminderSent = true;

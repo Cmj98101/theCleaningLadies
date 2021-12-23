@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_cleaning_ladies/widgets/raisedButtonX.dart';
 
 class LoginErrorHandler {
   final String errorCode;
@@ -86,20 +87,20 @@ class UserFriendlyMessages implements AbstractUFM {
               ),
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
-                FlatButton(
-                  child: Text("Cancel"),
-                  onPressed: () {
+                ElevatedButtonX(
+                  childX: Text("Cancel"),
+                  onPressedX: () {
                     Navigator.of(context).pop();
                   },
                 ),
-                RaisedButton(
-                    elevation: 5,
-                    child: Text(
+                ElevatedButtonX(
+                    elevationX: 5,
+                    childX: Text(
                       confirmButtonTitle,
                       style: TextStyle(color: Colors.white),
                     ),
-                    color: Colors.red,
-                    onPressed: onConfirm),
+                    colorX: Colors.red,
+                    onPressedX: onConfirm),
               ],
             ));
   }

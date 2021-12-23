@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/src/admin/views/Settings/find_phone_number.dart';
+import 'package:the_cleaning_ladies/widgets/raisedButtonX.dart';
 
 class MyNumbers extends StatefulWidget {
   final Admin admin;
@@ -29,16 +30,16 @@ class _MyNumbersState extends State<MyNumbers> {
             ? Center(
                 child: Container(
                   child: Container(
-                    child: RaisedButton(
-                      color: Colors.green[400],
-                      onPressed: () {
+                    child: ElevatedButtonX(
+                      colorX: Colors.green[400],
+                      onPressedX: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
                                     FindANumber(admin: widget.admin)));
                       },
-                      child: Text('Look for a Number Now!'),
+                      childX: Text('Look for a Number Now!'),
                     ),
                   ),
                 ),

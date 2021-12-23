@@ -7,6 +7,7 @@ import 'package:the_cleaning_ladies/models/user_models/client.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/BLoC/Clients/client_bloc.dart';
 import 'package:the_cleaning_ladies/BLoC/Clients/client_event.dart';
+import 'package:the_cleaning_ladies/utils/form_validation/form_validation.dart';
 import 'package:the_cleaning_ladies/widgets/AddClientForm/family_section.dart';
 
 class AddClientForm extends StatefulWidget {
@@ -22,7 +23,7 @@ class AddClientForm extends StatefulWidget {
 
 class _AddClientFormState extends State<AddClientForm> {
   final clientFormKey = GlobalKey<FormState>();
-
+  FormValidation _validation;
   Client client;
 
   ServiceFrequency _serviceFrequency = ServiceFrequency.weekly;
@@ -41,46 +42,6 @@ class _AddClientFormState extends State<AddClientForm> {
     Day(name: 'Fri.'),
     Day(name: 'Sat.'),
   ];
-
-  bool validateAndSaveClientForm() {
-    var form = clientFormKey.currentState;
-
-    if (form.validate()) {
-      form.save();
-      return true;
-    }
-    return false;
-  }
-
-  submitClientForm() {
-    if (validateAndSaveClientForm()) {
-      client.serviceFrequency = _serviceFrequency;
-      client.serviceTimePreference = _serviceTimePreference;
-      client.keyRequired = _keyRequired;
-      client.paymentType = _paymentType;
-      client.dayPreferences = _dayPreferenceList;
-      client.adminUserId = widget.admin.id;
-      client.notificationCount = 0;
-      client.businessCode = widget.admin.businessCode;
-      BlocProvider.of<ClientBloc>(context).add(AddClientEvent(client));
-      BlocProvider.of<ClientBloc>(context)
-          .add(LoadClientsEvent(admin: widget.admin));
-      Navigator.pop(context);
-    }
-  }
-
-  updateClient() {
-    if (validateAndSaveClientForm()) {
-      client.serviceFrequency = _serviceFrequency;
-      client.serviceTimePreference = _serviceTimePreference;
-      client.keyRequired = _keyRequired;
-      client.paymentType = _paymentType;
-      client.adminUserId = widget.admin.id;
-      changeDayPreferences();
-      BlocProvider.of<ClientBloc>(context).add(UpdateClientEvent(client));
-      widget.exitEditing();
-    }
-  }
 
   void changeDayPreferences() {
     for (int i = 0; i < _dayPreferenceList.length; i++) {
@@ -109,20 +70,54 @@ class _AddClientFormState extends State<AddClientForm> {
     });
   }
 
+  void addClient() {
+    client.serviceFrequency = _serviceFrequency;
+    client.serviceTimePreference = _serviceTimePreference;
+    client.keyRequired = _keyRequired;
+    client.paymentType = _paymentType;
+    client.dayPreferences = _dayPreferenceList;
+    client.adminUserId = widget.admin.id;
+    client.notificationCount = 0;
+    client.businessCode = widget.admin.businessCode;
+    BlocProvider.of<ClientBloc>(context).add(AddClientEvent(client));
+    BlocProvider.of<ClientBloc>(context)
+        .add(LoadClientsEvent(admin: widget.admin));
+    Navigator.pop(context);
+  }
+
+  void updateClient() {
+    client.serviceFrequency = _serviceFrequency;
+    client.serviceTimePreference = _serviceTimePreference;
+    client.keyRequired = _keyRequired;
+    client.paymentType = _paymentType;
+    client.adminUserId = widget.admin.id;
+    changeDayPreferences();
+    BlocProvider.of<ClientBloc>(context).add(UpdateClientEvent(client));
+    widget.exitEditing();
+  }
+
   @override
   void initState() {
     super.initState();
-    client = widget.client;
-    _keyRequired = client?.keyRequired ?? false;
-    _paymentType = client?.paymentType ?? PaymentType.unknown;
-    _serviceFrequency = client.serviceFrequency;
-    _serviceTimePreference = client.serviceTimePreference;
+    _validation = FormValidation(clientFormKey,
+        onSuccessFullValidation: () =>
+            widget.isEditing ? updateClient() : addClient(),
+        unSuccessFullValidation: () {});
+    setupClient();
     if (widget.isEditing) {
       for (int i = 0; i < _dayPreferenceList.length; i++) {
         _dayPreferenceList[i].favoribleScale =
             client.dayPreferences[i].favoribleScale;
       }
     }
+  }
+
+  void setupClient() {
+    client = widget.client;
+    _keyRequired = client?.keyRequired ?? false;
+    _paymentType = client?.paymentType ?? PaymentType.unknown;
+    _serviceFrequency = client.serviceFrequency;
+    _serviceTimePreference = client.serviceTimePreference;
   }
 
   @override
@@ -469,7 +464,7 @@ class _AddClientFormState extends State<AddClientForm> {
       margin: EdgeInsets.only(bottom: 30),
       child: RaisedButton(
         child: Text(widget.isEditing ? 'Update ' : 'Add'),
-        onPressed: widget.isEditing ? updateClient : submitClientForm,
+        onPressed: () => _validation.submitForm(),
       ),
     );
   }

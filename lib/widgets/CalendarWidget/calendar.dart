@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart' as sf;
 import 'package:the_cleaning_ladies/models/user_models/client.dart';
-import 'package:the_cleaning_ladies/src/Admin/views/appointmentOnTapDetails.dart';
+import 'package:the_cleaning_ladies/src/Admin/views/home/appointmentOnTapDetails.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/BLoC/Appointments/AppointmentRepo/appointmentRepo.dart';
 import 'package:the_cleaning_ladies/BLoC/Appointments/appointment_bloc.dart';
@@ -140,7 +140,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 
   void addRecurrencePropertyToAppointment(List<Appointment> appointments) {
-    sf.RecurrenceProperties recurrence = new sf.RecurrenceProperties();
+    sf.RecurrenceProperties recurrence =
+        new sf.RecurrenceProperties(startDate: DateTime.now());
 
     appointments.forEach((appointment) {
       recurrence.recurrenceType = sf.RecurrenceType.daily;

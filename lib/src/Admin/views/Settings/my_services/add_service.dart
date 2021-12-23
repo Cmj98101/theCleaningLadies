@@ -3,6 +3,8 @@ import 'package:flutter_multi_formatter/formatters/money_input_enums.dart';
 import 'package:flutter_multi_formatter/formatters/money_input_formatter.dart';
 import 'package:the_cleaning_ladies/models/service/service.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
+import 'package:the_cleaning_ladies/utils/form_validation/form_validation.dart';
+import 'package:the_cleaning_ladies/widgets/raisedButtonX.dart';
 
 class AddService extends StatefulWidget {
   final Admin admin;
@@ -14,23 +16,17 @@ class AddService extends StatefulWidget {
 
 class _AddServiceState extends State<AddService> {
   GlobalKey<FormState> serviceFormKey = GlobalKey<FormState>();
-
+  FormValidation _validation;
   Service service = Service();
   bool isAddingMore = false;
-  bool validateAndSave() {
-    final form = serviceFormKey.currentState;
-    if (form.validate()) {
-      form.save();
-      return true;
-    }
-    return false;
-  }
 
-  void handleSubmit() {
-    if (validateAndSave()) {
+  @override
+  void initState() {
+    super.initState();
+    _validation = FormValidation(serviceFormKey, onSuccessFullValidation: () {
       widget.admin.services.add(service);
       widget.admin.services.list.add(service);
-    }
+    }, unSuccessFullValidation: () {});
   }
 
   @override
@@ -90,10 +86,10 @@ class _AddServiceState extends State<AddService> {
                 ),
               ),
               Container(
-                child: RaisedButton(
-                  child: Text('Add'),
-                  onPressed: () {
-                    handleSubmit();
+                child: ElevatedButtonX(
+                  childX: Text('Add'),
+                  onPressedX: () {
+                    _validation.submitForm();
 
                     if (!isAddingMore) {
                       Navigator.pop(context);

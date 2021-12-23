@@ -31,6 +31,36 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const MaterialColor white = const MaterialColor(
+      0xFFFFFFFF,
+      const <int, Color>{
+        50: const Color(0xFFFFFFFF),
+        100: const Color(0xFFFFFFFF),
+        200: const Color(0xFFFFFFFF),
+        300: const Color(0xFFFFFFFF),
+        400: const Color(0xFFFFFFFF),
+        500: const Color(0xFFFFFFFF),
+        600: const Color(0xFFFFFFFF),
+        700: const Color(0xFFFFFFFF),
+        800: const Color(0xFFFFFFFF),
+        900: const Color(0xFFFFFFFF),
+      },
+    );
+    const MaterialColor orange = const MaterialColor(
+      0xFFF28921,
+      const <int, Color>{
+        50: const Color(0xFFF28921),
+        100: const Color(0xFFF28921),
+        200: const Color(0xFFF28921),
+        300: const Color(0xFFF28921),
+        400: const Color(0xFFF28921),
+        500: const Color(0xFFF28921),
+        600: const Color(0xFFF28921),
+        700: const Color(0xFFF28921),
+        800: const Color(0xFFF28921),
+        900: const Color(0xFFF28921),
+      },
+    );
     return MultiBlocProvider(
         providers: [
           BlocProvider<ClientBloc>(
@@ -47,7 +77,12 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'The Cleaning Ladies',
           theme: ThemeData(
-            primarySwatch: Colors.green,
+            primarySwatch: orange,
+            // secondaryHeaderColor: Colors.teal,
+            elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(white),
+                    backgroundColor: MaterialStateProperty.all<Color>(orange))),
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
           home: ScreenManager(auth: ImpAuth()),

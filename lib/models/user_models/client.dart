@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:the_cleaning_ladies/models/appointment_model/appointment.dart';
 import 'package:the_cleaning_ladies/models/easy_db/EasyDb.dart';
+import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/models/user_models/user.dart';
 import 'package:the_cleaning_ladies/models/history_event.dart';
 import 'package:the_cleaning_ladies/models/size_config.dart';
@@ -49,6 +50,8 @@ class Day {
 }
 
 class Client extends User {
+  EasyDB _easyDb = DataBaseRepo();
+
   DateTime customTimePreference;
   String adminUserId;
   String businessCode;
@@ -85,6 +88,8 @@ class Client extends User {
     7: 'Sunday',
   };
 
+  String get lastAndNextService =>
+      'Last Service: ${(formattedLastCleaning ?? '')} -> ${(nextCleaning ?? '')}';
   DateTime get lastServiceDateOnly =>
       DateTime(lastService.year, lastService.month, lastService.day);
 
@@ -214,6 +219,8 @@ class Client extends User {
     }
   }
 
+  void update(Map<String, dynamic> data) async =>
+      await _easyDb.editDocumentData('Users/$id', data);
   Widget displayDayPreferences(
       {bool withCard = true,
       double sizeMultiplier = 3.0,
@@ -327,22 +334,22 @@ class Client extends User {
     }
   }
 
-  Appointment calculateTimeForCleaningAndSchedule() {
+  Appointment calculateTimeForCleaningAndSchedule(Admin admin) {
     Appointment appointment;
 
     switch (serviceTimePreference) {
       case ServiceTimePreference.earlyMornings:
         appointment = Appointment(
-          'Cleaning',
-          nextCleaningDate['from'].add(Duration(
-            hours: 8,
-          )),
-          nextCleaningDate['to'].add(Duration(hours: 8, minutes: 45)),
-          Colors.green,
-          false,
-          this,
-          keyRequired: keyRequired,
-        );
+            'Cleaning',
+            nextCleaningDate['from'].add(Duration(
+              hours: 8,
+            )),
+            nextCleaningDate['to'].add(Duration(hours: 8, minutes: 45)),
+            Colors.green,
+            false,
+            this,
+            keyRequired: keyRequired,
+            admin: admin);
         return appointment;
 
         break;
@@ -354,7 +361,8 @@ class Client extends User {
             Colors.green,
             false,
             this,
-            keyRequired: keyRequired);
+            keyRequired: keyRequired,
+            admin: admin);
         return appointment;
         break;
       case ServiceTimePreference.afternoons:
@@ -365,7 +373,8 @@ class Client extends User {
             Colors.green,
             false,
             this,
-            keyRequired: keyRequired);
+            keyRequired: keyRequired,
+            admin: admin);
         return appointment;
         break;
 
@@ -377,7 +386,8 @@ class Client extends User {
             Colors.green,
             false,
             this,
-            keyRequired: keyRequired);
+            keyRequired: keyRequired,
+            admin: admin);
         return appointment;
       default:
         return Appointment.creationFailure();

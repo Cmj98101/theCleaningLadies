@@ -11,7 +11,7 @@ import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 import 'package:the_cleaning_ladies/models/user_models/client.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:the_cleaning_ladies/notification_model/notification_model.dart';
-import 'package:the_cleaning_ladies/src/admin/views/messageInbox.dart';
+import 'package:the_cleaning_ladies/src/admin/views/MyClients/messageInbox.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
@@ -300,6 +300,7 @@ class PushNotifications {
     } else {
       _saveDeviceToken();
     }
+
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage1 $message");
