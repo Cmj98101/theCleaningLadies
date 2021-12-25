@@ -57,7 +57,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               if (details.targetElement == sf.CalendarElement.appointment ||
                   details.targetElement == sf.CalendarElement.agenda) {
                 if (details.appointments.length <= 0) {
-                  return print("No Appointment");
+                  return print(
+                      "Selecting an area where there is no appointments");
                 }
                 Appointment appointmentDetails = details.appointments[0];
               }
@@ -81,7 +82,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                             sf.CalendarElement.appointment ||
                         details.targetElement == sf.CalendarElement.agenda) {
                       if (details.appointments.length <= 0) {
-                        return print("No Appointment");
+                        return print(
+                            "Selecting an area where there is no appointments");
                       }
                       Appointment appointmentDetails = details.appointments[0];
 

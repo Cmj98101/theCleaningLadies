@@ -43,7 +43,8 @@ class AppointmentBloc extends Bloc<AppointmentEvent, AppointmentState> {
 
   Stream<AppointmentState> _mapAddAppointmentToState(
       AddAppointmentEvent event) async* {
-    _appointmentsRepository.addNewAppointment(event.appointment, event.admin);
+    _appointmentsRepository.addNewAppointment(
+        event.appointment, event.admin, event.onCreationError);
   }
 
   Stream<AppointmentState> _mapUpdateAppointmentToState(

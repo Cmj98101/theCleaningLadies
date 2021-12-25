@@ -40,7 +40,15 @@ class DataBaseRepo implements EasyDB {
             for (var i = 0; i < duplicatedCollectionPath.length; i++) {
               await _db
                   .doc('${duplicatedCollectionPath[i]}/${ref.id}')
-                  .set(duplicatedData[i].isEmpty ? {} : duplicatedData[i]);
+                  .set(duplicatedData[i].isEmpty ? {} : duplicatedData[i])
+                  .onError((error, stackTrace) =>
+                      throw ('Error creating Duplicate data! check EasyDB'))
+                  .catchError(() async {
+                return await _db.collection('Log').add({
+                  'path': '${duplicatedCollectionPath[i]}/${ref.id}',
+                  'dupData': duplicatedData[i].isEmpty ? {} : duplicatedData[i]
+                });
+              });
             }
           }
           if (addAutoIDToDoc) {

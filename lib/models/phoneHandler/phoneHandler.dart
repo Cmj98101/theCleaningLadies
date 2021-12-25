@@ -166,11 +166,7 @@ $optionsMSG
 The Cleaning Ladies & More - IMPORTANT MESSAGE:
 Dear ${client.firstName},
 
-I want to take a moment this holiday season to personally thank you for your support and cooperation. 
-I am so thankful and it has been a complete honor to work with you. 
-I am wishing you and your loved ones a prosperous holiday season full of love, happiness and success. 
-Thank you for your support and I look forward to working with you for many years to come.
-
+As the holiday season is upon us, we find ourselves reflecting on the past year. It’s been quite a year for us all! I am in my second year running the business and with the pandemic, unfortunately it has not always been easy. However, through the tough times you have made running the business easy and I really appreciate you and I thank you for your patience! I look forward to working with you in the many years to come.
 """;
       print(
           '(${client.firstName}, ${client?.lastName ?? ''} active: ${client.active}) sending...');

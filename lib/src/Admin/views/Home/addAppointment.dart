@@ -83,7 +83,13 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
         // widget.admin.createAppointment(timeTile.appointment);
         if (timeTile?.appointment != null) {
           BlocProvider.of<AppointmentBloc>(context)
-              .add(AddAppointmentEvent(timeTile.appointment, widget.admin));
+              .add(AddAppointmentEvent(timeTile.appointment, widget.admin, () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                  title: Text('Error Creating Appointment'), content: Text('')),
+            );
+          }));
         }
       });
 

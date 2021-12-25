@@ -207,7 +207,7 @@ export const sendToDeviceOnSMS = functions.firestore
                 badge: `${newNotificationCount}`,
                 click_action: 'FLUTTER_NOTIFICATION_CLICK'
               },
-              
+
 
             };
             return fcm.sendToDevice(tokens, payload);

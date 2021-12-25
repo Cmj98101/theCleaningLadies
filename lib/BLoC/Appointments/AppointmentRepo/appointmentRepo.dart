@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:the_cleaning_ladies/models/appointment_model/appointment.dart';
 import 'package:the_cleaning_ladies/models/easy_db/EasyDb.dart';
 import 'package:the_cleaning_ladies/models/history_event.dart';
@@ -8,7 +11,8 @@ import 'package:the_cleaning_ladies/notification_model/notification_model.dart';
 import 'package:the_cleaning_ladies/notification_model/push_notification.dart';
 
 abstract class AppointmentsRepository {
-  Future<void> addNewAppointment(Appointment appointment, Admin admin);
+  Future<void> addNewAppointment(
+      Appointment appointment, Admin admin, VoidCallback onCreationError);
   Future<void> deleteClientAppointment(Appointment appointment);
   Future<void> deleteAppointment(Appointment appointment, Admin admin);
   Stream<List<Appointment>> appointments(Admin admin);
@@ -31,7 +35,8 @@ class FireBaseAppointmentsRepository implements AppointmentsRepository {
   }
 
   @override
-  Future<void> addNewAppointment(Appointment appointment, Admin admin) async {
+  Future<void> addNewAppointment(Appointment appointment, Admin admin,
+      VoidCallback onCreationError) async {
     Client _client = appointment.client;
     print('creating appointment for Customer ID: ${_client.id}');
     NotificationModel notification = NotificationModel(
@@ -52,52 +57,58 @@ class FireBaseAppointmentsRepository implements AppointmentsRepository {
           print(
               'Error Scheduling for ${appointment.client.firstAndLastFormatted}');
 
-          return await _easyDb.createUserData(
-              'Users/${admin.id}/Appointments', appointment.toDocument(),
-              duplicateDoc: true,
-              duplicatedCollectionPath: [
-                'Users/${_client.id}/Cleaning History',
-              ],
-              duplicatedData: [
-                HistoryEvent.fromAppointment(appointment).toDocument(),
-              ],
-              onCreation: (docId) async {});
+          return await _easyDb
+              .createUserData(
+                  'Users/${admin.id}/Appointments', appointment.toDocument(),
+                  duplicateDoc: true,
+                  duplicatedCollectionPath: [
+                    'Users/${_client.id}/Cleaning History',
+                  ],
+                  duplicatedData: [
+                    HistoryEvent.fromAppointment(appointment).toDocument(),
+                  ],
+                  onCreation: (docId) async {})
+              .catchError((onError) => onCreationError);
         },
         onQueueFull: () async {
           // Notification Not Schedled
           print('Queue Full for ${appointment.client.firstAndLastFormatted}');
 
           notification.isSet = false;
-          return await _easyDb.createUserData(
-              'Users/${admin.id}/Appointments', appointment.toDocument(),
-              duplicateDoc: true,
-              duplicatedCollectionPath: [
-                'Users/${_client.id}/Cleaning History',
-                'Users/${admin.id}/Notifications'
-              ],
-              duplicatedData: [
-                HistoryEvent.fromAppointment(appointment).toDocument(),
-                notification.toDoc()
-              ],
-              onCreation: (docId) async {});
+          return await _easyDb
+              .createUserData(
+                  'Users/${admin.id}/Appointments', appointment.toDocument(),
+                  duplicateDoc: true,
+                  duplicatedCollectionPath: [
+                    'Users/${_client.id}/Cleaning History',
+                    'Users/${admin.id}/Notifications'
+                  ],
+                  duplicatedData: [
+                    HistoryEvent.fromAppointment(appointment).toDocument(),
+                    notification.toDoc()
+                  ],
+                  onCreation: (docId) async {})
+              .catchError((onError) => onCreationError);
         },
         onNotificationScheduled: () async {
           // Schedule was successful
           print(
               'Scheduling Successfull for ${appointment.client.firstAndLastFormatted}');
           notification.isSet = true;
-          return await _easyDb.createUserData(
-              'Users/${admin.id}/Appointments', appointment.toDocument(),
-              duplicateDoc: true,
-              duplicatedCollectionPath: [
-                'Users/${_client.id}/Cleaning History',
-                'Users/${admin.id}/Notifications'
-              ],
-              duplicatedData: [
-                HistoryEvent.fromAppointment(appointment).toDocument(),
-                notification.toDoc()
-              ],
-              onCreation: (docId) async {});
+          return await _easyDb
+              .createUserData(
+                  'Users/${admin.id}/Appointments', appointment.toDocument(),
+                  duplicateDoc: true,
+                  duplicatedCollectionPath: [
+                    'Users/${_client.id}/Cleaning History',
+                    'Users/${admin.id}/Notifications'
+                  ],
+                  duplicatedData: [
+                    HistoryEvent.fromAppointment(appointment).toDocument(),
+                    notification.toDoc()
+                  ],
+                  onCreation: (docId) async {})
+              .catchError((onError) => onCreationError);
         });
   }
 

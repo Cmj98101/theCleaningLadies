@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:the_cleaning_ladies/models/appointment_model/appointment.dart';
 import 'package:the_cleaning_ladies/models/user_models/admin.dart';
 
@@ -11,8 +12,9 @@ class LoadAppointmentsEvent extends AppointmentEvent {
 class AddAppointmentEvent extends AppointmentEvent {
   final Appointment appointment;
   final Admin admin;
+  final VoidCallback onCreationError;
 
-  AddAppointmentEvent(this.appointment, this.admin);
+  AddAppointmentEvent(this.appointment, this.admin, this.onCreationError);
 }
 
 class UpdateAppointmentEvent extends AppointmentEvent {

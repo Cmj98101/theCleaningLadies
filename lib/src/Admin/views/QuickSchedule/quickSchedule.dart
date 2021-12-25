@@ -291,8 +291,15 @@ class _QuickScheduleScreenState extends State<QuickScheduleScreen> {
         unconfirmedAppointments.forEach((timeTile) {
           // widget.admin.createAppointment(timeTile.appointment);
           if (timeTile?.appointment != null) {
-            BlocProvider.of<AppointmentBloc>(context)
-                .add(AddAppointmentEvent(timeTile.appointment, widget.admin));
+            BlocProvider.of<AppointmentBloc>(context).add(
+                AddAppointmentEvent(timeTile.appointment, widget.admin, () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                    title: Text('Error Creating Appointment'),
+                    content: Text('')),
+              );
+            }));
           }
         });
       });
